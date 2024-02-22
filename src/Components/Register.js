@@ -18,24 +18,28 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
       const response = await axios.post('http://localhost:5000/register', formData);
-  
-      // Check if the response is defined and has a 'data' property
+
       if (response && response.data) {
-        console.log(response.data); // Assuming the server sends a success message
+        console.log(response.data);
+        alert('Registration successful');
       } else {
         console.error('Unexpected response format:', response);
+        alert('Unexpected response format');
       }
     } catch (error) {
       console.error('Error:', error);
+
       if (error.response) {
         console.error('Server response:', error.response.data);
+        alert(error.response.data.error);
+      } else {
+        alert('Internal Server Error'); // Generic error message
       }
     }
   };
-  
 
   return (
     <div>

@@ -6,7 +6,7 @@ const dbConfig = {
   host: 'localhost',
   user: 'root',
   password: 'mysql@21',
-  database: 'dbmsproject'
+  database: 'cim'
 };
 
 const pool = mysql.createPool(dbConfig);

@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Register from './Components/Register';
 import Login from './Components/Login';
 import Home from './Components/Home';
+import Dashboard from './Components/Dashboard';
+import Crops from './Components/Crops';
 
 
 const App = () => {
@@ -14,6 +16,9 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Home />} />
+          <Route path='/dashboard' element={<Dashboard />} />
+          <Route path="/crops" element={<Crops />} />
+
         </Routes>
       </div>
     </Router>

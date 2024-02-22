@@ -5,8 +5,13 @@ async function hashPassword(password) {
   return await bcrypt.hash(password, 10);
 }
 
-async function comparePasswords(inputPassword, hashedPassword) {
-  return await bcrypt.compare(inputPassword, hashedPassword);
-}
+const comparePasswords = async (userProvidedPassword, storedHashedPassword) => {
+  try {
+    return await bcrypt.compare(userProvidedPassword, storedHashedPassword);
+  } catch (error) {
+    console.error('Error comparing passwords:', error);
+    throw error;
+  }
+};
 
 module.exports = { hashPassword, comparePasswords };

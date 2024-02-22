@@ -1,11 +1,69 @@
 // apiRoutes.js
-
 const express = require('express');
 const router = express.Router();  // Define the router here
 const pool = require('./db');
+const jwt = require('jsonwebtoken'); // Assuming you are using JWT for authentication
 
 // Middleware to parse JSON requests
 router.use(express.json());
+
+// // Middleware to verify JWT token
+// const verifyToken = (req, res, next) => {
+//   const token = req.header('Authorization');
+
+//   if (!token) return res.status(401).json({ error: 'Unauthorized' });
+
+//   try {
+//     const decoded = jwt.verify(token, 'development');
+//     req.user = decoded.userId;
+//     next();
+//   } catch (error) {
+//     console.error(error);
+//     res.status(401).json({ error: 'Token is not valid' });
+//   }
+// };
+
+const verifyToken = (req, res, next) => {
+  const token = req.header('Authorization');
+  console.log('Received Token:', token);
+
+  if (!token) {
+    return res.status(401).json({ error: 'Unauthorized - Token missing' });
+  }
+
+  try {
+    const decoded = jwt.verify(token.replace('Bearer ', ''), 'development');
+    console.log('Decoded Token:', decoded);
+    req.user = decoded.userId;
+    next();
+  } catch (error) {
+    console.error('Error verifying token:', error);
+    res.status(401).json({ error: 'Token is not valid' });
+  }
+};
+
+
+// Protected route
+router.get('/user/dashboard', verifyToken, async (req, res) => {
+  try {
+    // Access the authenticated user information from req.user
+    const userId = req.user;
+
+    // Fetch user-specific dashboard data using the user ID
+    const [userData] = await pool.query('SELECT * FROM Users WHERE userid = ?', [userId]);
+
+    // Check if user data exists
+    if (userData.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Return user-specific dashboard data
+    res.json(userData[0]);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 // Define routes for the 'crops' resource
 router.route('/crops')
@@ -87,6 +145,72 @@ router.delete('/crops/:id', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+// Get crops related to a specific user
+router.get('/crops/user/:userID', async (req, res) => {
+  try {
+    const { userID } = req.params;
+
+    // Fetch crops based on the userID
+    const [rows] = await pool.query('SELECT * FROM Crops WHERE UserID = ?', [userID]);
+
+    res.json(rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Create a new crop for a user
+router.post('/crops/user/:userID', async (req, res) => {
+  try {
+    const { userID } = req.params;
+    const data = req.body;
+
+    // Add the userID to the crop data
+    data.UserID = userID;
+
+    // Insert the new crop into the database
+    const [result] = await pool.query('INSERT INTO Crops SET ?', [data]);
+
+    res.json({ message: 'Crop created successfully', id: result.insertId });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Update a crop for a user
+router.put('/crops/user/:userID/:cropID', async (req, res) => {
+  try {
+    const { userID, cropID } = req.params;
+    const data = req.body;
+
+    // Update the crop in the database
+    await pool.query('UPDATE Crops SET ? WHERE CropID = ? AND UserID = ?', [data, cropID, userID]);
+
+    res.json({ message: 'Crop updated successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Delete a crop for a user
+router.delete('/crops/user/:userID/:cropID', async (req, res) => {
+  try {
+    const { userID, cropID } = req.params;
+
+    // Delete the crop from the database
+    await pool.query('DELETE FROM Crops WHERE CropID = ? AND UserID = ?', [cropID, userID]);
+
+    res.json({ message: `Crop with ID ${cropID} deleted successfully` });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 
 // Get all StorageLocations
 router.get('/storagelocations', async (req, res) => {
@@ -722,5 +846,8 @@ router.delete('/workers/:id', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+
+
 
 module.exports = router;

@@ -1,27 +1,47 @@
-// userController.js
-
 const express = require('express');
 const router = express.Router();
 const pool = require('./db');
 const { hashPassword, comparePasswords } = require('./bcryptUtils');
 const generateJWT = require('./jwtUtils');
+const short = require('short-uuid');
 
 router.get('/', (req, res) => {
-    res.send('Hello, this is the root path!');
-  });
+  res.send('Hello, this is the root path!');
+});
+
+// Create a short UUID generator
+const shortUuid = short();
 
 // Register route
 router.post('/register', async (req, res) => {
   try {
     const { username, password, phoneNumber, email } = req.body;
 
+    // Check if any required field is missing
+    if (!username || !password || !phoneNumber || !email) {
+      return res.status(400).json({ error: 'All fields are required' });
+    }
+
+    // Generate a short UUID starting with 'u'
+    const userid = 'u' + shortUuid.new();
+
+    // Check if the user already exists in the database
+    const [existingUsers] = await pool.execute(
+      'SELECT * FROM Users WHERE username = ? OR email = ?',
+      [username, email]
+    );
+
+    if (existingUsers.length > 0) {
+      return res.status(409).json({ error: 'Username or email is already in use' });
+    }
+
     // Hash the password
     const hashedPassword = await hashPassword(password);
 
-    // Insert user into the database
+    // Insert user into the database with generated userid
     const [result] = await pool.execute(
-      'INSERT INTO Users (username, password, phoneNumber, email) VALUES (?, ?, ?, ?)',
-      [username, hashedPassword, phoneNumber, email]
+      'INSERT INTO Users (userid, username, password, phoneNumber, email) VALUES (?, ?, ?, ?, ?)',
+      [userid, username, hashedPassword, phoneNumber, email]
     );
 
     res.json({ message: 'Registration successful' });
@@ -31,6 +51,7 @@ router.post('/register', async (req, res) => {
   }
 });
 
+
 // Login route
 router.post('/login', async (req, res) => {
   try {
@@ -38,7 +59,7 @@ router.post('/login', async (req, res) => {
 
     // Retrieve user from the database
     const [rows] = await pool.execute(
-      'SELECT * FROM Users WHERE username = ?',
+      'SELECT userid, username, password FROM Users WHERE username = ?',
       [username]
     );
 
@@ -47,20 +68,21 @@ router.post('/login', async (req, res) => {
     }
 
     const user = rows[0];
+    const storedHashedPassword = user.password;
 
-    // Compare the hashed password
-    const passwordMatch = await comparePasswords(password, user.password);
+    // Compare the hashed password using bcrypt
+    const passwordMatch = await comparePasswords(password, storedHashedPassword);
 
     if (!passwordMatch) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
     // Generate JWT token
-    const token = generateJWT(user.id);
+    const token = generateJWT(user.userid);
 
     res.json({ token });
   } catch (error) {
-    console.error(error);
+    console.error('Error in login:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
