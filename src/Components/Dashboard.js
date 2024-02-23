@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import Crops from './Crops';
 
 const Dashboard = () => {
   const [userData, setUserData] = useState(null);
@@ -38,7 +39,7 @@ const Dashboard = () => {
 
           {/* Summary Cards */}
           <div>
-            <Link to="/crops">
+            <Link to={`/crops/${userData.UserID}`}>
               <div>
                 <h3>Total Crops</h3>
                 <p>Get an overview of your crops.</p>
@@ -47,10 +48,10 @@ const Dashboard = () => {
           </div>
 
           <div>
-            <Link to="/storage-locations">
+            <Link to={`/inventory/${userData.UserID}`}>
               <div>
-                <h3>Storage Locations</h3>
-                <p>View and manage your storage locations.</p>
+                <h3>Inventories</h3>
+                <p>View and manage your inventorise.</p>
               </div>
             </Link>
           </div>

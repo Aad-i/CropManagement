@@ -6,6 +6,7 @@ import Login from './Components/Login';
 import Home from './Components/Home';
 import Dashboard from './Components/Dashboard';
 import Crops from './Components/Crops';
+import Inventory from './Components/Inventory';
 
 
 const App = () => {
@@ -17,7 +18,8 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Home />} />
           <Route path='/dashboard' element={<Dashboard />} />
-          <Route path="/crops" element={<Crops />} />
+          <Route path="/crops/:userID" element={<Crops/>} />
+          <Route path="/inventory/:userID" element={<Inventory />} />
 
         </Routes>
       </div>

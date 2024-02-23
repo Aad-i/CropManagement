@@ -295,6 +295,78 @@ router.delete('/storagelocations/:id', async (req, res) => {
 });
 
 
+/*************************************************************************************************/
+
+
+// Get inventory items related to a specific user
+router.get('/inventory/user/:userID', async (req, res) => {
+  try {
+    const { userID } = req.params;
+
+    // Fetch inventory items based on the userID
+    const [rows] = await pool.query('SELECT * FROM Inventory WHERE UserID = ?', [userID]);
+
+    res.json(rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Create a new inventory item for a user
+router.post('/inventory/user/:userID', async (req, res) => {
+  try {
+    const { userID } = req.params;
+    const data = req.body;
+
+    // Add the userID to the inventory data
+    data.UserID = userID;
+
+    // Insert the new inventory item into the database
+    const [result] = await pool.query('INSERT INTO Inventory SET ?', [data]);
+
+    res.json({ message: 'Inventory item created successfully', id: result.insertId });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Update an inventory item for a user
+router.put('/inventory/user/:userID/:inventoryID', async (req, res) => {
+  try {
+    const { userID, inventoryID } = req.params;
+    const data = req.body;
+
+    // Update the inventory item in the database
+    await pool.query('UPDATE Inventory SET ? WHERE InventoryID = ? AND UserID = ?', [data, inventoryID, userID]);
+
+    res.json({ message: 'Inventory item updated successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Delete an inventory item for a user
+router.delete('/inventory/user/:userID/:inventoryID', async (req, res) => {
+  try {
+    const { userID, inventoryID } = req.params;
+
+    // Delete the inventory item from the database
+    await pool.query('DELETE FROM Inventory WHERE InventoryID = ? AND UserID = ?', [inventoryID, userID]);
+
+    res.json({ message: `Inventory item with ID ${inventoryID} deleted successfully` });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+/*************************************************************************************************/
+
+
 // Define routes for the 'inventory' resource
 router.route('/inventory')
   .get(async (req, res) => {
