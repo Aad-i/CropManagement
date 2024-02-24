@@ -34,8 +34,11 @@ const Dashboard = () => {
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {userData && (
         <div>
-          <p>User ID: {userData.UserID}</p>
+          {/* <p>User ID: {userData.UserID}</p> */}
           <p>Username: {userData.Username}</p>
+          <p>Contact Number: {userData.PhoneNumber}</p>
+          <p>Email: {userData.Email}</p>
+
 
           {/* Summary Cards */}
           <div>
@@ -55,6 +58,43 @@ const Dashboard = () => {
               </div>
             </Link>
           </div>
+
+          <div>
+            <Link to={`/transactions/${userData.UserID}`}>
+              <div className="card">
+                <h3>Transactions</h3>
+                <p>View your transaction history.</p>
+              </div>
+            </Link>
+          </div>
+
+          <div>
+            <Link to={`/equipments-usage/${userData.UserID}`}>
+              <div className="card">
+                <h3>Equipments Usage</h3>
+                <p>View and manage your equipment usage.</p>
+              </div>
+            </Link>
+          </div>
+
+          <div>
+            <Link to={`/equipments/${userData.UserID}`}>
+              <div className="card">
+                <h3>Equipments</h3>
+                <p>View all equipment details.</p>
+              </div>
+            </Link>
+          </div>
+
+          <div>
+        <Link to="/market">
+          <div className="card">
+            <h3>Market</h3>
+            <p>Explore and manage market items.</p>
+          </div>
+        </Link>
+      </div>
+
 
           {/* Add more summary cards for other metrics */}
 

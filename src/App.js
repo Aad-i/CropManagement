@@ -7,6 +7,10 @@ import Home from './Components/Home';
 import Dashboard from './Components/Dashboard';
 import Crops from './Components/Crops';
 import Inventory from './Components/Inventory';
+import Transactions from './Components/Transactions';
+import EquipmentsUsage from './Components/EquipmentsUsage';
+import EquipmentsDetailsPage from './Components/EquipmentDetails';
+import Market from './Components/Market';
 
 
 const App = () => {
@@ -20,7 +24,10 @@ const App = () => {
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path="/crops/:userID" element={<Crops/>} />
           <Route path="/inventory/:userID" element={<Inventory />} />
-
+          <Route path="/transactions/:userID" element={<Transactions />} />
+          <Route path="/equipments-usage/:userID" element={<EquipmentsUsage />} />
+          <Route path="/equipments/:userID" element={<EquipmentsDetailsPage/>} />
+          <Route path="/market" element={<Market/>} />
         </Routes>
       </div>
     </Router>

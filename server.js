@@ -10,9 +10,9 @@ const port = 5000;
 app.use(bodyParser.json());
 
 // Enable CORS for all routes
-app.use(cors()); // Add this line
+app.use(cors()); 
 
-// Use the userController for authentication routes
+//userController for authentication routes
 app.use('/', userController);
 app.use('/', apiRoutes);
 

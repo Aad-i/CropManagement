@@ -36,7 +36,7 @@ const Register = () => {
         console.error('Server response:', error.response.data);
         alert(error.response.data.error);
       } else {
-        alert('Internal Server Error'); // Generic error message
+        alert('Internal Server Error'); 
       }
     }
   };

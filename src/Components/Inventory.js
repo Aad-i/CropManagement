@@ -26,6 +26,8 @@ const Inventory = () => {
         Taluk: '',
     });
 
+    const [selectedLocation, setSelectedLocation] = useState('');
+
     useEffect(() => {
         const fetchInventory = async () => {
             try {
@@ -161,6 +163,15 @@ const Inventory = () => {
         }
     };
 
+    const handleLocationChange = (event) => {
+        setSelectedLocation(event.target.value);
+    };
+
+    // Filter inventory based on selected location
+    const filteredInventory = selectedLocation
+        ? inventory.filter((item) => item.LocationID === selectedLocation)
+        : inventory;
+
     return (
         <div>
             <h2>Inventory</h2>
@@ -223,10 +234,7 @@ const Inventory = () => {
                 <button onClick={isEditing ? handleConfirmEdit : handleCreateInventoryItem}>
                     {isEditing ? 'Confirm Edit' : 'Add Inventory Item'}
                 </button>
-
             </div>
-
-
 
             {showAddLocation && (
                 <div>
@@ -302,6 +310,23 @@ const Inventory = () => {
 
             <div>
                 <h3>Inventory List</h3>
+                {/* Dropdown for selecting location */}
+                <label>
+                    Select Location:
+                    <select
+                        value={selectedLocation}
+                        onChange={handleLocationChange}
+                    >
+                        <option value="">All Locations</option>
+                        {locations.map((location) => (
+                            <option key={location.LocationID} value={location.LocationID}>
+                                {location.LocationName}
+                            </option>
+                        ))}
+                    </select>
+                </label>
+
+                {/* Display filtered inventory */}
                 <table>
                     <thead>
                         <tr>
@@ -314,7 +339,7 @@ const Inventory = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {inventory.map((item) => (
+                        {filteredInventory.map((item) => (
                             <tr key={item.InventoryID}>
                                 <td>{item.InventoryID}</td>
                                 <td>{item.LocationID}</td>

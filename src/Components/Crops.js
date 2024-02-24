@@ -9,7 +9,6 @@ const Crops = () => {
   const [newCrop, setNewCrop] = useState({
     CropID: '',
     CropName: '',
-    Quantity: 0,
     Purpose: '',
     HarvestDate: '',
     TotalYield: 0,
@@ -17,30 +16,40 @@ const Crops = () => {
     UserID: userID,
   });
 
-  useEffect(() => {
-    const fetchCrops = async () => {
-      try {
-        const cropsResponse = await axios.get(`http://localhost:5000/crops/user/${userID}`);
-        setCrops(cropsResponse.data);
-      } catch (error) {
-        console.error('Error fetching crops:', error);
-      }
-    };
+  const [qualityFilter, setQualityFilter] = useState('');
+  const [purposeFilter, setPurposeFilter] = useState('');
 
+  useEffect(() => {
     fetchCrops();
-  }, [userID]);
+  }, [userID, qualityFilter, purposeFilter]);
+
+  const fetchCrops = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5000/crops/user/${userID}`, {
+        params: {
+          quality: qualityFilter,
+          purpose: purposeFilter,
+        },
+      });
+      setCrops(response.data);
+    } catch (error) {
+      console.error('Error fetching crops:', error);
+    }
+  };
 
   const handleCreateCrop = async () => {
+    if (isAnyFieldEmpty()) {
+      alert('Please fill out all required fields.');
+      return;
+    }
     try {
       await axios.post(`http://localhost:5000/crops/user/${userID}`, newCrop);
       // Refresh crops data after creating a new crop
-      const cropsResponse = await axios.get(`http://localhost:5000/crops/user/${userID}`);
-      setCrops(cropsResponse.data);
+      fetchCrops();
       // Clear the newCrop state and set UserID to the userID from the URL
       setNewCrop({
         CropID: '',
         CropName: '',
-        Quantity: 0,
         Purpose: '',
         HarvestDate: '',
         TotalYield: 0,
@@ -57,7 +66,6 @@ const Crops = () => {
     setNewCrop({
       CropID: crop.CropID,
       CropName: crop.CropName,
-      Quantity: crop.Quantity,
       Purpose: crop.Purpose,
       HarvestDate: crop.HarvestDate,
       TotalYield: crop.TotalYield,
@@ -68,16 +76,18 @@ const Crops = () => {
   };
 
   const handleConfirmEdit = async () => {
+    if (isAnyFieldEmpty()) {
+      alert('Please fill out all required fields.');
+      return;
+    }
     try {
       await axios.put(`http://localhost:5000/crops/user/${userID}/${newCrop.CropID}`, newCrop);
       // Refresh crops data after editing a crop
-      const cropsResponse = await axios.get(`http://localhost:5000/crops/user/${userID}`);
-      setCrops(cropsResponse.data);
+      fetchCrops();
       // Clear the newCrop state
       setNewCrop({
         CropID: '',
         CropName: '',
-        Quantity: 0,
         Purpose: '',
         HarvestDate: '',
         TotalYield: 0,
@@ -85,7 +95,6 @@ const Crops = () => {
         UserID: userID,
       });
       setEditMode(false);
-
     } catch (error) {
       console.error('Error editing crop:', error);
     }
@@ -95,12 +104,42 @@ const Crops = () => {
     try {
       await axios.delete(`http://localhost:5000/crops/user/${userID}/${cropID}`);
       // Refresh crops data after deleting a crop
-      const cropsResponse = await axios.get(`http://localhost:5000/crops/user/${userID}`);
-      setCrops(cropsResponse.data);
+      fetchCrops();
     } catch (error) {
       console.error('Error deleting crop:', error);
     }
   };
+
+  const handleCancelEdit = () => {
+    // Clear the newCrop state and exit edit mode
+    setNewCrop({
+      CropID: '',
+      CropName: '',
+      Purpose: '',
+      HarvestDate: '',
+      TotalYield: 0,
+      Quality: '',
+      UserID: userID,
+    });
+    setEditMode(false);
+  };
+
+  const isAnyFieldEmpty = () => {
+    return (
+      !newCrop.CropID ||
+      !newCrop.CropName ||
+      !newCrop.Purpose ||
+      !newCrop.HarvestDate ||
+      !newCrop.TotalYield ||
+      !newCrop.Quality
+    );
+  };
+
+  const filteredCrops = crops.filter((crop) => {
+    const qualityMatch = !qualityFilter || crop.Quality === qualityFilter;
+    const purposeMatch = !purposeFilter || crop.Purpose === purposeFilter;
+    return qualityMatch && purposeMatch;
+  });
 
   return (
     <div>
@@ -113,6 +152,7 @@ const Crops = () => {
             type="text"
             value={newCrop.CropID}
             onChange={(e) => setNewCrop({ ...newCrop, CropID: e.target.value })}
+            required
           />
         </label>
         <br />
@@ -122,25 +162,21 @@ const Crops = () => {
             type="text"
             value={newCrop.CropName}
             onChange={(e) => setNewCrop({ ...newCrop, CropName: e.target.value })}
-          />
-        </label>
-        <br />
-        <label>
-          Quantity:
-          <input
-            type="number"
-            value={newCrop.Quantity}
-            onChange={(e) => setNewCrop({ ...newCrop, Quantity: Number(e.target.value) })}
+            required
           />
         </label>
         <br />
         <label>
           Purpose:
-          <input
-            type="text"
+          <select
             value={newCrop.Purpose}
             onChange={(e) => setNewCrop({ ...newCrop, Purpose: e.target.value })}
-          />
+            required
+          >
+            <option value="">Select Purpose</option>
+            <option value="Cultivation">Cultivation</option>
+            <option value="Sale">Sale</option>
+          </select>
         </label>
         <br />
         <label>
@@ -149,6 +185,7 @@ const Crops = () => {
             type="date"
             value={newCrop.HarvestDate}
             onChange={(e) => setNewCrop({ ...newCrop, HarvestDate: e.target.value })}
+            required
           />
         </label>
         <br />
@@ -156,22 +193,32 @@ const Crops = () => {
           Total Yield:
           <input
             type="number"
+            min={0}
             value={newCrop.TotalYield}
             onChange={(e) => setNewCrop({ ...newCrop, TotalYield: Number(e.target.value) })}
+            required
           />
         </label>
         <br />
         <label>
           Quality:
-          <input
-            type="text"
+          <select
             value={newCrop.Quality}
             onChange={(e) => setNewCrop({ ...newCrop, Quality: e.target.value })}
-          />
+            required
+          >
+            <option value="">Select Quality</option>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+          </select>
         </label>
         <br />
         {editMode ? (
-          <button onClick={handleConfirmEdit}>Confirm Edit</button>
+          <>
+            <button onClick={handleConfirmEdit}>Confirm Edit</button>
+            <button onClick={handleCancelEdit}>Cancel Edit</button>
+          </>
         ) : (
           <button onClick={handleCreateCrop}>Add Crop</button>
         )}
@@ -179,12 +226,35 @@ const Crops = () => {
 
       <div>
         <h3>Crops List</h3>
+        {/* Add filters for Quality and Purpose */}
+        <label>
+          Quality Filter:
+          <select
+            value={qualityFilter}
+            onChange={(e) => setQualityFilter(e.target.value)}
+          >
+            <option value="">All</option>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+          </select>
+        </label>
+        <label>
+          Purpose Filter:
+          <select
+            value={purposeFilter}
+            onChange={(e) => setPurposeFilter(e.target.value)}
+          >
+            <option value="">All</option>
+            <option value="Cultivation">Cultivation</option>
+            <option value="Sale">Sale</option>
+          </select>
+        </label>
         <table>
           <thead>
             <tr>
               <th>Crop ID</th>
               <th>Crop Name</th>
-              <th>Quantity</th>
               <th>Purpose</th>
               <th>Harvest Date</th>
               <th>Total Yield</th>
@@ -193,11 +263,10 @@ const Crops = () => {
             </tr>
           </thead>
           <tbody>
-            {crops.map((crop) => (
+          {filteredCrops.map((crop) => (
               <tr key={crop.CropID}>
                 <td>{crop.CropID}</td>
                 <td>{crop.CropName}</td>
-                <td>{crop.Quantity}</td>
                 <td>{crop.Purpose}</td>
                 <td>{new Date(crop.HarvestDate).toLocaleDateString()}</td>
                 <td>{crop.TotalYield}</td>
