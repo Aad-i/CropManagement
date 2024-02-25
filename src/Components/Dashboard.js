@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import Crops from './Crops';
+import './Dashboard.scss'; // Import the SCSS file
 
 const Dashboard = () => {
   const [userData, setUserData] = useState(null);
@@ -29,75 +29,49 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div>
-      <h2>User Dashboard</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+    <div className="user-dashboard">
+      <h2 className="dashboard-title">User Dashboard</h2>
+      {error && <p className="error-message">{error}</p>}
       {userData && (
-        <div>
-          {/* <p>User ID: {userData.UserID}</p> */}
+        <div className="user-info">
           <p>Username: {userData.Username}</p>
           <p>Contact Number: {userData.PhoneNumber}</p>
           <p>Email: {userData.Email}</p>
 
-
           {/* Summary Cards */}
-          <div>
-            <Link to={`/crops/${userData.UserID}`}>
-              <div>
-                <h3>Total Crops</h3>
-                <p>Get an overview of your crops.</p>
-              </div>
+          <div className="summary-cards">
+            <Link to={`/crops/${userData.UserID}`} className="summary-card">
+              <h3 className="card-title">Total Crops</h3>
+              <p className="card-description">Get an overview of your crops.</p>
+            </Link>
+
+            <Link to={`/inventory/${userData.UserID}`} className="summary-card">
+              <h3 className="card-title">Inventories</h3>
+              <p className="card-description">View and manage your inventories.</p>
+            </Link>
+
+            <Link to={`/transactions/${userData.UserID}`} className="summary-card">
+              <h3 className="card-title">Transactions</h3>
+              <p className="card-description">View your transaction history.</p>
+            </Link>
+
+            <Link to={`/equipments-usage/${userData.UserID}`} className="summary-card">
+              <h3 className="card-title">Equipments Usage</h3>
+              <p className="card-description">View and manage your equipment usage.</p>
+            </Link>
+
+            <Link to={`/equipments/${userData.UserID}`} className="summary-card">
+              <h3 className="card-title">Equipments</h3>
+              <p className="card-description">View all equipment details.</p>
+            </Link>
+
+            <Link to={`/market/${userData.UserID}`} className="summary-card">
+              <h3 className="card-title">Market</h3>
+              <p className="card-description">Explore and manage market items.</p>
             </Link>
           </div>
-
-          <div>
-            <Link to={`/inventory/${userData.UserID}`}>
-              <div>
-                <h3>Inventories</h3>
-                <p>View and manage your inventorise.</p>
-              </div>
-            </Link>
-          </div>
-
-          <div>
-            <Link to={`/transactions/${userData.UserID}`}>
-              <div className="card">
-                <h3>Transactions</h3>
-                <p>View your transaction history.</p>
-              </div>
-            </Link>
-          </div>
-
-          <div>
-            <Link to={`/equipments-usage/${userData.UserID}`}>
-              <div className="card">
-                <h3>Equipments Usage</h3>
-                <p>View and manage your equipment usage.</p>
-              </div>
-            </Link>
-          </div>
-
-          <div>
-            <Link to={`/equipments/${userData.UserID}`}>
-              <div className="card">
-                <h3>Equipments</h3>
-                <p>View all equipment details.</p>
-              </div>
-            </Link>
-          </div>
-
-          <div>
-        <Link to="/market">
-          <div className="card">
-            <h3>Market</h3>
-            <p>Explore and manage market items.</p>
-          </div>
-        </Link>
-      </div>
-
 
           {/* Add more summary cards for other metrics */}
-
         </div>
       )}
     </div>

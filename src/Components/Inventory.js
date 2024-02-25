@@ -156,13 +156,13 @@ const Inventory = () => {
                 OccupiedCapacity: 0,
                 UserID: userID,
             });
-            setIsEditing(true);
-
+            // Reset the editing state to false
+            setIsEditing(false);
         } catch (error) {
             console.error('Error editing inventory item:', error);
         }
     };
-
+    
     const handleLocationChange = (event) => {
         setSelectedLocation(event.target.value);
     };
@@ -195,7 +195,7 @@ const Inventory = () => {
                         <option value="">Select Location</option>
                         {locations.map((location) => (
                             <option key={location.LocationID} value={location.LocationID}>
-                                {location.LocationName}
+                                {location.LocationID}-{location.LocationName}
                             </option>
                         ))}
                     </select>

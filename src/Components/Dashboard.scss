@@ -1,0 +1,76 @@
+// Dashboard.scss
+
+// Global styles if needed
+
+.user-dashboard {
+    text-align: center;
+    padding: 20px;
+  
+    .dashboard-title {
+      font-size: 2rem;
+      color: #4CAF50; /* Green color */
+      margin-bottom: 20px;
+    }
+  
+    .user-info {
+      color: #333333; /* Dark gray color */
+      font-size: 1rem;
+      margin: 5px 0;
+    }
+  
+    .error-message {
+      color: red;
+      margin-top: 10px;
+      font-size: 1rem;
+    }
+  
+    .summary-cards {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      margin-top: 20px;
+  
+      .summary-card {
+        background-color: #F1F8E9; /* Light green background */
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added shadow */
+        padding: 20px;
+        margin: 10px;
+        text-align: center;
+        transition: transform 0.2s;
+        flex: 0 0 calc(30% - 20px); /* Adjusted width, each card takes up approximately 30% of the container width */
+  
+        h3 {
+          font-size: 1.5rem;
+          color: #6D4C41; /* Greyish brown color for card title */
+          margin-bottom: 10px;
+          text-decoration: none; /* Remove underline from card title */
+        }
+  
+        p {
+          // Greyish brown color for the content
+        //   color: #A1887F;
+          // Greyish green color for the content
+        //   color: #546E7A;
+        color: #424242; /* Darker grey color for the content */
+
+  
+          font-size: 1rem;
+          text-decoration: none; /* Remove underline from card content */
+        }
+  
+        &:hover {
+          transform: scale(1.05);
+          background-color: #DCEDC8; /* Lighter green background on hover */
+        }
+      }
+    }
+  }
+  
+  // Media query for responsiveness
+  @media screen and (max-width: 768px) {
+    .user-dashboard .summary-cards .summary-card {
+      flex: 0 0 calc(100% - 20px); /* One card in a row on smaller screens */
+    }
+  }
+  

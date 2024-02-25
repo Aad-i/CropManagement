@@ -11,6 +11,8 @@ import Transactions from './Components/Transactions';
 import EquipmentsUsage from './Components/EquipmentsUsage';
 import EquipmentsDetailsPage from './Components/EquipmentDetails';
 import Market from './Components/Market';
+import SellItem from './Components/SellItem';
+import Checkout from './Components/Checkout';
 
 
 const App = () => {
@@ -27,7 +29,9 @@ const App = () => {
           <Route path="/transactions/:userID" element={<Transactions />} />
           <Route path="/equipments-usage/:userID" element={<EquipmentsUsage />} />
           <Route path="/equipments/:userID" element={<EquipmentsDetailsPage/>} />
-          <Route path="/market" element={<Market/>} />
+          <Route path="/market/:userID" element={<Market/>} />
+          <Route path="/market/:userID/sell-item" element={<SellItem/>} />
+          <Route path="/checkout" element={<Checkout />} />
         </Routes>
       </div>
     </Router>

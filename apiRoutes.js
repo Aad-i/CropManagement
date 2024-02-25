@@ -4,6 +4,7 @@ const router = express.Router();  // Define the router here
 const pool = require('./db');
 const jwt = require('jsonwebtoken'); // Assuming you are using JWT for authentication
 
+
 // Middleware to parse JSON requests
 router.use(express.json());
 
@@ -60,6 +61,35 @@ router.get('/user/dashboard', verifyToken, async (req, res) => {
 
     // Return user-specific dashboard data
     res.json(userData[0]);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+router.get('/users/:userID', async (req, res) => {
+  const { userID } = req.params;
+
+  try {
+    const query = `
+      SELECT UserName, PhoneNumber, Email
+      FROM Users
+      WHERE UserID = ?;
+    `;
+
+    console.log('Executing Query:', query);
+
+    const [rows] = await pool.query(query, [userID]);
+
+    console.log('Query Results:', rows);
+
+    // Check if user with the specified ID exists
+    if (rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Return user details
+    res.json(rows[0]);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -151,16 +181,41 @@ router.get('/user/dashboard', verifyToken, async (req, res) => {
 router.get('/crops/user/:userID', async (req, res) => {
   try {
     const { userID } = req.params;
+    const { excludeHidden } = req.query;
 
-    // Fetch crops based on the userID
-    const [rows] = await pool.query('SELECT * FROM Crops WHERE UserID = ?', [userID]);
+    let query = 'SELECT * FROM Crops WHERE UserID = ?';
+    const values = [userID];
 
-    res.json(rows);
+    if (excludeHidden && excludeHidden.toLowerCase() === 'true') {
+      query += ' AND IsHidden = FALSE';
+    }
+
+    const [crops] = await pool.query(query, values);
+    res.json(crops);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+
+router.get('/crops/:userID/sale', async (req, res) => {
+  try {
+    const { userID } = req.params;
+
+    console.log('Fetching crops for user ID:', userID);
+
+    const [rows] = await pool.query("SELECT * FROM Crops WHERE UserID = ? AND Purpose = 'Sale'", [userID]);
+
+    console.log('Crops fetched:', rows);
+
+    res.json(rows);
+  } catch (error) {
+    console.error('Error fetching crops:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 
 // Create a new crop for a user
 router.post('/crops/user/:userID', async (req, res) => {
@@ -214,86 +269,86 @@ router.delete('/crops/user/:userID/:cropID', async (req, res) => {
 
 
 // Get all StorageLocations
-// router.get('/storagelocations', async (req, res) => {
-//   try {
-//     const [rows] = await pool.query('SELECT * FROM StorageLocations');
-//     res.json(rows);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: 'Internal Server Error' });
-//   }
-// });
+router.get('/storagelocations', async (req, res) => {
+  try {
+    const [rows] = await pool.query('SELECT * FROM StorageLocations');
+    res.json(rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
-// // Get a single StorageLocation by ID
-// router.get('/storagelocations/:id/', async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     if (!id || isNaN(id)) {
-//       return res.status(400).json({ error: 'Invalid ID' });
-//     }
-//     const [result] = await pool.query('SELECT * FROM StorageLocations WHERE LocationID = ?', [id]);
-//     if (result.length === 0) {
-//       return res.status(404).json({ error: 'Record not found' });
-//     }
-//     res.json(result[0]);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: 'Internal Server Error' });
-//   }
-// });
+// Get a single StorageLocation by ID
+router.get('/storagelocations/:id/', async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!id || isNaN(id)) {
+      return res.status(400).json({ error: 'Invalid ID' });
+    }
+    const [result] = await pool.query('SELECT * FROM StorageLocations WHERE LocationID = ?', [id]);
+    if (result.length === 0) {
+      return res.status(404).json({ error: 'Record not found' });
+    }
+    res.json(result[0]);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
-// // Create a new StorageLocation
-// router.post('/storagelocations', async (req, res) => {
-//   try {
-//     const data = req.body;
-//     if (typeof data !== 'object' || Array.isArray(data)) {
-//       return res.status(400).json({ error: 'Invalid data' });
-//     }
-//     const [result] = await pool.query('INSERT INTO StorageLocations SET ?', [data]);
-//     res.json({ message: 'POST request for StorageLocations', id: result.insertId });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: 'Internal Server Error' });
-//   }
-// });
+// Create a new StorageLocation
+router.post('/storagelocations', async (req, res) => {
+  try {
+    const data = req.body;
+    if (typeof data !== 'object' || Array.isArray(data)) {
+      return res.status(400).json({ error: 'Invalid data' });
+    }
+    const [result] = await pool.query('INSERT INTO StorageLocations SET ?', [data]);
+    res.json({ message: 'POST request for StorageLocations', id: result.insertId });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
-// // Update a StorageLocation
-// router.put('/storagelocations/:id', async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     if (!id || isNaN(id)) {
-//       return res.status(400).json({ error: 'Invalid ID' });
-//     }
-//     const data = req.body;
-//     if (typeof data !== 'object' || Array.isArray(data)) {
-//       return res.status(400).json({ error: 'Invalid data' });
-//     }
-//     await pool.query('UPDATE StorageLocations SET ? WHERE LocationID = ?', [data, id]);
-//     res.json({ message: 'PUT request for StorageLocations' });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: 'Internal Server Error' });
-//   }
-// });
+// Update a StorageLocation
+router.put('/storagelocations/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!id || isNaN(id)) {
+      return res.status(400).json({ error: 'Invalid ID' });
+    }
+    const data = req.body;
+    if (typeof data !== 'object' || Array.isArray(data)) {
+      return res.status(400).json({ error: 'Invalid data' });
+    }
+    await pool.query('UPDATE StorageLocations SET ? WHERE LocationID = ?', [data, id]);
+    res.json({ message: 'PUT request for StorageLocations' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
-// // Delete a StorageLocation
-// router.delete('/storagelocations/:id', async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     if (!id || isNaN(id)) {
-//       return res.status(400).json({ error: 'Invalid ID' });
-//     }
-//     const [result] = await pool.query('SELECT * FROM StorageLocations WHERE LocationID = ?', [id]);
-//     if (result.length === 0) {
-//       return res.status(404).json({ error: 'Record not found' });
-//     }
-//     await pool.query('DELETE FROM StorageLocations WHERE LocationID = ?', [id]);
-//     res.json({ message: 'DELETE request for StorageLocations' });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: 'Internal Server Error' });
-//   }
-// });
+// Delete a StorageLocation
+router.delete('/storagelocations/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!id || isNaN(id)) {
+      return res.status(400).json({ error: 'Invalid ID' });
+    }
+    const [result] = await pool.query('SELECT * FROM StorageLocations WHERE LocationID = ?', [id]);
+    if (result.length === 0) {
+      return res.status(404).json({ error: 'Record not found' });
+    }
+    await pool.query('DELETE FROM StorageLocations WHERE LocationID = ?', [id]);
+    res.json({ message: 'DELETE request for StorageLocations' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 
 /*************************************************************************************************/
@@ -473,21 +528,13 @@ router.delete('/inventory/user/:userID/:inventoryID', async (req, res) => {
 router.get('/transactions/user/:userID', async (req, res) => {
   try {
     const { userID } = req.params;
-    const { filter } = req.query;
 
-    let queryString = `
-      SELECT Transactions.*, Counterparties.CounterpartyRole
+    const queryString = `
+      SELECT *
       FROM Transactions
-      JOIN Counterparties ON Transactions.CounterpartyID = Counterparties.CounterpartyID
-      WHERE Transactions.UserID = ?`;
+      WHERE UserID = ?`;
 
     const queryParams = [userID];
-
-    if (filter === 'sold') {
-      queryString += ' AND Counterparties.CounterpartyRole = "buyer"';
-    } else if (filter === 'bought') {
-      queryString += ' AND Counterparties.CounterpartyRole = "supplier"';
-    }
 
     const [result] = await pool.query(queryString, queryParams);
 
@@ -502,10 +549,40 @@ router.get('/transactions/user/:userID', async (req, res) => {
 
 
 // Create a new transaction for a user
+
+// router.post('/transactions/user/:userID', async (req, res) => {
+//   try {
+//     const { userID } = req.params;
+//     const data = req.body;
+
+//     // Generate a short transaction ID
+
+//     // Add the transactionID and userID to the transaction data
+//     data.UserID = userID;
+
+//     // Insert the new transaction into the database
+//     const [result] = await pool.query('INSERT INTO Transactions SET ?', [data]);
+
+//     res.json({ message: 'Transaction created successfully', id: result.insertId });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// });
+
+
+const short = require('short-uuid');
+
+// Create a translator instance
+const translator = short();
+
 router.post('/transactions/user/:userID', async (req, res) => {
   try {
     const { userID } = req.params;
     const data = req.body;
+
+    // Generate short UUID with 'T' prefix
+    data.TransactionID = 'T' + translator.new();
 
     // Add the userID to the transaction data
     data.UserID = userID;
@@ -520,21 +597,7 @@ router.post('/transactions/user/:userID', async (req, res) => {
   }
 });
 
-// Update a transaction for a user
-router.put('/transactions/user/:userID/:transactionID', async (req, res) => {
-  try {
-    const { userID, transactionID } = req.params;
-    const data = req.body;
 
-    // Update the transaction in the database
-    await pool.query('UPDATE Transactions SET ? WHERE TransactionID = ? AND UserID = ?', [data, transactionID, userID]);
-
-    res.json({ message: 'Transaction updated successfully' });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
 
 // Delete a transaction for a user
 router.delete('/transactions/user/:userID/:transactionID', async (req, res) => {
@@ -635,46 +698,36 @@ router.delete('/transactions/user/:userID/:transactionID', async (req, res) => {
 // });
 
 // Define routes for the 'counterparties' resource
-// router.route('/counterparties')
-//   .get(async (req, res) => {
-//     try {
-//       const [rows] = await pool.query('SELECT * FROM Counterparties');
-//       res.json(rows);
-//     } catch (error) {
-//       console.error(error);
-//       res.status(500).json({ error: 'Internal Server Error' });
-//     }
-//   })
-//   .post(async (req, res) => {
-//     try {
-//       const data = req.body;
-//       if (typeof data !== 'object' || Array.isArray(data)) {
-//         return res.status(400).json({ error: 'Invalid data' });
-//       }
-//       const [result] = await pool.query('INSERT INTO Counterparties SET ?', [data]);
-//       res.json({ message: 'POST request for counterparties', id: result.insertId });
-//     } catch (error) {
-//       console.error(error);
-//       res.status(500).json({ error: 'Internal Server Error' });
-//     }
-//   })
-
-  router.get('/counterparties/:id', async (req, res) => {
-    try {
-      const { id } = req.params;
-      // if (!id || isNaN(id)) {
-      //   return res.status(400).json({ error: 'Invalid ID' });
-      // }
-      const [result] = await pool.query('SELECT * FROM Counterparties WHERE CounterpartyID = ?', [id]);
-      if (result.length === 0) {
-        return res.status(404).json({ error: 'Record not found' });
-      }
-      res.json(result[0]);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
+router.post('/counterparties', async (req, res) => {
+  try {
+    const data = req.body;
+    if (typeof data !== 'object' || Array.isArray(data)) {
+      return res.status(400).json({ error: 'Invalid data' });
     }
-  });
+    const [result] = await pool.query('INSERT INTO Counterparties SET ?', [data]);
+    res.json({ message: 'POST request for counterparties', id: result.insertId });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+})
+
+router.get('/counterparties/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    // if (!id || isNaN(id)) {
+    //   return res.status(400).json({ error: 'Invalid ID' });
+    // }
+    const [result] = await pool.query('SELECT * FROM Counterparties WHERE CounterpartyID = ?', [id]);
+    if (result.length === 0) {
+      return res.status(404).json({ error: 'Record not found' });
+    }
+    res.json(result[0]);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 // Update a Counterparty
 // router.put('/counterparties/:id', async (req, res) => {
 //   try {
@@ -886,21 +939,21 @@ router.get('/equipments/user/:userID', async (req, res) => {
 // Get a single equipment item for editing
 router.get('/equipments/user/:userID/:equipmentID', async (req, res) => {
   try {
-      const { userID, equipmentID } = req.params;
+    const { userID, equipmentID } = req.params;
 
-      // Fetch the equipment item based on userID and equipmentID
-      const [equipment] = await pool.query('SELECT * FROM Equipments WHERE UserID = ? AND EquipmentID = ?', [userID, equipmentID]);
+    // Fetch the equipment item based on userID and equipmentID
+    const [equipment] = await pool.query('SELECT * FROM Equipments WHERE UserID = ? AND EquipmentID = ?', [userID, equipmentID]);
 
-      // Check if equipment exists
-      if (equipment.length === 0) {
-          return res.status(404).json({ error: 'Equipment not found' });
-      }
+    // Check if equipment exists
+    if (equipment.length === 0) {
+      return res.status(404).json({ error: 'Equipment not found' });
+    }
 
-      // Send the equipment details as JSON response
-      res.json(equipment[0]);
+    // Send the equipment details as JSON response
+    res.json(equipment[0]);
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
@@ -966,17 +1019,19 @@ router.delete('/equipments/user/:userID/:equipmentID', async (req, res) => {
 /******************************************************************************************************************************************************market itemssssss */
 
 // Get market items
-router.get('/market-items', async (req, res) => {
+router.get('/market-items/user/:userID', async (req, res) => {
+  const { userID } = req.params;
   try {
     const query = `
       SELECT mi.ItemID, mi.SellerID, mi.Price, c.CropName, c.TotalYield, c.Quality
       FROM MarketItems mi
-      JOIN Crops c ON mi.ItemID = c.CropID;
+      JOIN Crops c ON mi.ItemID = c.CropID
+      WHERE mi.SellerID != ? AND c.IsHidden = 0;
     `;
 
     console.log('Executing Query:', query);
 
-    const [rows] = await pool.query(query);
+    const [rows] = await pool.query(query, [userID]);
 
     console.log('Query Results:', rows);
 
@@ -986,6 +1041,70 @@ router.get('/market-items', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+
+router.get('/market-items/user/belongs/:userID', async (req, res) => {
+  const { userID } = req.params;
+  try {
+    const query = `
+      SELECT mi.ItemID, mi.SellerID, mi.Price, c.CropName, c.TotalYield, c.Quality
+      FROM MarketItems mi
+      JOIN Crops c ON mi.ItemID = c.CropID
+      WHERE mi.SellerID = ?;
+    `;
+
+    console.log('Executing Query:', query);
+
+    const [rows] = await pool.query(query, [userID]);
+
+    console.log('Query Results:', rows);
+
+    res.json(rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+
+
+router.post('/market-items', async (req, res) => {
+  try {
+    const { itemID, sellerID, price } = req.body;
+
+    // Check if the item already exists in the MarketItems table
+    const [existingItem] = await pool.query('SELECT * FROM MarketItems WHERE ItemID = ? AND SellerID = ?', [itemID, sellerID]);
+
+    if (existingItem.length > 0) {
+      return res.status(400).json({ error: 'Item already exists in the market.' });
+    }
+
+    // Insert the new item into the MarketItems table
+    await pool.query('INSERT INTO MarketItems (ItemID, SellerID, Price) VALUES (?, ?, ?)', [itemID, sellerID, price]);
+
+    res.json({ message: 'Item added to the market successfully.' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+router.get('/market-items/:cropID/:sellerID', async (req, res) => {
+  try {
+    const { cropID, sellerID } = req.params;
+
+    // Query the MarketItems table to check if the item exists
+    const [rows] = await pool.query('SELECT * FROM MarketItems WHERE ItemID = ? AND SellerID = ?', [cropID, sellerID]);
+
+    // Return the result to the client
+    res.json(rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 
 /********************************************************************************************************************* **********************************/
 
@@ -1071,12 +1190,12 @@ router.get('/market-items', async (req, res) => {
 // Get all equipment details for a specific user
 router.get('/user/:userID', async (req, res) => {
   try {
-      const { userID } = req.params;
-      const [rows] = await pool.query('SELECT * FROM Equipments WHERE UserID = ?', [userID]);
-      res.json(rows);
+    const { userID } = req.params;
+    const [rows] = await pool.query('SELECT * FROM Equipments WHERE UserID = ?', [userID]);
+    res.json(rows);
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
@@ -1085,54 +1204,54 @@ router.get('/user/:userID', async (req, res) => {
 // Get details of a specific equipment
 router.get('/:equipmentID', async (req, res) => {
   try {
-      const { equipmentID } = req.params;
-      const [rows] = await pool.query('SELECT * FROM Equipments WHERE EquipmentID = ?', [equipmentID]);
-      if (rows.length === 0) {
-          return res.status(404).json({ error: 'Equipment not found' });
-      }
-      res.json(rows[0]);
+    const { equipmentID } = req.params;
+    const [rows] = await pool.query('SELECT * FROM Equipments WHERE EquipmentID = ?', [equipmentID]);
+    if (rows.length === 0) {
+      return res.status(404).json({ error: 'Equipment not found' });
+    }
+    res.json(rows[0]);
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
 // Create a new equipment for a user
 router.post('/user/:userID', async (req, res) => {
   try {
-      const { userID } = req.params;
-      const data = req.body;
-      data.UserID = userID;
-      const [result] = await pool.query('INSERT INTO Equipments SET ?', [data]);
-      res.json({ message: 'Equipment created successfully', id: result.insertId });
+    const { userID } = req.params;
+    const data = req.body;
+    data.UserID = userID;
+    const [result] = await pool.query('INSERT INTO Equipments SET ?', [data]);
+    res.json({ message: 'Equipment created successfully', id: result.insertId });
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
 // Update an existing equipment
 router.put('/:equipmentID', async (req, res) => {
   try {
-      const { equipmentID } = req.params;
-      const data = req.body;
-      await pool.query('UPDATE Equipments SET ? WHERE EquipmentID = ?', [data, equipmentID]);
-      res.json({ message: 'Equipment updated successfully' });
+    const { equipmentID } = req.params;
+    const data = req.body;
+    await pool.query('UPDATE Equipments SET ? WHERE EquipmentID = ?', [data, equipmentID]);
+    res.json({ message: 'Equipment updated successfully' });
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
 // Delete an equipment
 router.delete('/:equipmentID', async (req, res) => {
   try {
-      const { equipmentID } = req.params;
-      await pool.query('DELETE FROM Equipments WHERE EquipmentID = ?', [equipmentID]);
-      res.json({ message: `Equipment with ID ${equipmentID} deleted successfully` });
+    const { equipmentID } = req.params;
+    await pool.query('DELETE FROM Equipments WHERE EquipmentID = ?', [equipmentID]);
+    res.json({ message: `Equipment with ID ${equipmentID} deleted successfully` });
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
@@ -1216,19 +1335,19 @@ router.route('/workers')
       res.status(500).json({ error: 'Internal Server Error' });
     }
   })
-  // .post(async (req, res) => {
-  //   try {
-  //     const data = req.body;
-  //     if (typeof data !== 'object' || Array.isArray(data)) {
-  //       return res.status(400).json({ error: 'Invalid data' });
-  //     }
-  //     const [result] = await pool.query('INSERT INTO Workers SET ?', [data]);
-  //     res.json({ message: 'POST request for workers', id: result.insertId });
-  //   } catch (error) {
-  //     console.error(error);
-  //     res.status(500).json({ error: 'Internal Server Error' });
-  //   }
-  // })
+// .post(async (req, res) => {
+//   try {
+//     const data = req.body;
+//     if (typeof data !== 'object' || Array.isArray(data)) {
+//       return res.status(400).json({ error: 'Invalid data' });
+//     }
+//     const [result] = await pool.query('INSERT INTO Workers SET ?', [data]);
+//     res.json({ message: 'POST request for workers', id: result.insertId });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// })
 
 
 

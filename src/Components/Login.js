@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import './Login.scss'; // Import the SCSS file
+
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +11,8 @@ const Login = () => {
   });
 
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -20,6 +24,8 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setLoading(true);
 
     try {
       const response = await axios.post('http://localhost:5000/login', formData);
@@ -35,25 +41,27 @@ const Login = () => {
     } catch (error) {
       console.error(error.response.data);
       setError('Invalid credentials. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div>
-      <h2>User Login</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+    <div className="login-container">
+      <h2 className="login-title">User Login</h2>
+      {error && <p className="error-message">{error}</p>}
       <form onSubmit={handleSubmit}>
-        <label>
-          Username:
-          <input type="text" name="username" value={formData.username} onChange={handleChange} />
-        </label>
-        <br />
-        <label>
-          Password:
-          <input type="password" name="password" value={formData.password} onChange={handleChange} />
-        </label>
-        <br />
-        <button type="submit">Login</button>
+        <div className="form-group">
+          <label className="form-label">Username:</label>
+          <input type="text" name="username" value={formData.username} onChange={handleChange} className="form-input" required />
+        </div>
+        <div className="form-group">
+          <label className="form-label">Password:</label>
+          <input type="password" name="password" value={formData.password} onChange={handleChange} className="form-input" required />
+        </div>
+        <button type="submit" className="submit-button" disabled={loading}>
+          {loading ? 'Logging in...' : 'Login'}
+        </button>
       </form>
     </div>
   );

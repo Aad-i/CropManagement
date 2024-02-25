@@ -1,0 +1,67 @@
+// LandingPageTheme.scss
+
+.landing-page-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+  
+    .landing-page-title {
+      color: #4CAF50; // Green color
+    }
+  
+    .landing-page-description {
+      margin-bottom: 20px;
+      color: #6E7B69; // Olive green color
+    }
+  
+    .cta-buttons-container {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+  
+      .cta-link {
+        text-decoration: none;
+      }
+  
+      .cta-button {
+        background-color: #4CAF50; // Green color
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s;
+  
+        &:hover {
+          background-color: #689F38; // Darker green color
+        }
+      }
+    }
+  }
+  
+  // Responsive styles
+  @media only screen and (max-width: 600px) {
+    .landing-page-container {
+      padding: 10px;
+  
+      .landing-page-title {
+        font-size: 1.5em;
+      }
+  
+      .landing-page-description {
+        font-size: 14px;
+      }
+  
+      .cta-buttons-container {
+        flex-direction: column;
+        align-items: center;
+  
+        .cta-button {
+          width: 100%;
+          margin-bottom: 10px;
+        }
+      }
+    }
+  }
+  

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import './Crops.scss';
 
 const Crops = () => {
   const { userID } = useParams();
@@ -29,6 +30,7 @@ const Crops = () => {
         params: {
           quality: qualityFilter,
           purpose: purposeFilter,
+          excludeHidden: true, //to exclude hidden crops
         },
       });
       setCrops(response.data);
@@ -142,35 +144,38 @@ const Crops = () => {
   });
 
   return (
-    <div>
-      <h2>Crops</h2>
-      <div>
-        <h3>Create New Crop</h3>
-        <label>
+    <div className="crops-container">
+      <h2 className="crops-title">Crops</h2>
+      <div className="create-crop-section">
+        <h3 className="create-crop-title">Create New Crop</h3>
+        <label className="form-label">
           Crop ID:
           <input
             type="text"
+            className="form-input"
             value={newCrop.CropID}
             onChange={(e) => setNewCrop({ ...newCrop, CropID: e.target.value })}
             required
           />
         </label>
         <br />
-        <label>
+        <label className="form-label">
           Crop Name:
           <input
             type="text"
+            className="form-input"
             value={newCrop.CropName}
             onChange={(e) => setNewCrop({ ...newCrop, CropName: e.target.value })}
             required
           />
         </label>
         <br />
-        <label>
+        <label className="form-label">
           Purpose:
           <select
             value={newCrop.Purpose}
             onChange={(e) => setNewCrop({ ...newCrop, Purpose: e.target.value })}
+            className="form-input"
             required
           >
             <option value="">Select Purpose</option>
@@ -179,32 +184,35 @@ const Crops = () => {
           </select>
         </label>
         <br />
-        <label>
+        <label className="form-label">
           Harvest Date:
           <input
             type="date"
+            className="form-input"
             value={newCrop.HarvestDate}
             onChange={(e) => setNewCrop({ ...newCrop, HarvestDate: e.target.value })}
             required
           />
         </label>
         <br />
-        <label>
+        <label className="form-label">
           Total Yield:
           <input
             type="number"
             min={0}
+            className="form-input"
             value={newCrop.TotalYield}
             onChange={(e) => setNewCrop({ ...newCrop, TotalYield: Number(e.target.value) })}
             required
           />
         </label>
         <br />
-        <label>
+        <label className="form-label">
           Quality:
           <select
             value={newCrop.Quality}
             onChange={(e) => setNewCrop({ ...newCrop, Quality: e.target.value })}
+            className="form-input"
             required
           >
             <option value="">Select Quality</option>
@@ -214,70 +222,76 @@ const Crops = () => {
           </select>
         </label>
         <br />
+
         {editMode ? (
           <>
-            <button onClick={handleConfirmEdit}>Confirm Edit</button>
-            <button onClick={handleCancelEdit}>Cancel Edit</button>
+            <button className="form-button" onClick={handleConfirmEdit}>Confirm Edit</button>
+            <button className="form-button" onClick={handleCancelEdit}>Cancel Edit</button>
           </>
         ) : (
-          <button onClick={handleCreateCrop}>Add Crop</button>
+          <button className="form-button" onClick={handleCreateCrop}>Add Crop</button>
         )}
       </div>
 
-      <div>
-        <h3>Crops List</h3>
-        {/* Add filters for Quality and Purpose */}
-        <label>
-          Quality Filter:
-          <select
-            value={qualityFilter}
-            onChange={(e) => setQualityFilter(e.target.value)}
-          >
-            <option value="">All</option>
-            <option value="A">A</option>
-            <option value="B">B</option>
-            <option value="C">C</option>
-          </select>
-        </label>
-        <label>
-          Purpose Filter:
-          <select
-            value={purposeFilter}
-            onChange={(e) => setPurposeFilter(e.target.value)}
-          >
-            <option value="">All</option>
-            <option value="Cultivation">Cultivation</option>
-            <option value="Sale">Sale</option>
-          </select>
-        </label>
-        <table>
+      <div className="crops-list-section">
+        <h3 className="crops-list-title">Crops List</h3>
+        <div className="filter-section">
+          <label className="filter-label">
+            Quality Filter:
+            <select
+              value={qualityFilter}
+              onChange={(e) => setQualityFilter(e.target.value)}
+              className="filter-select"
+            >
+              <option value="">All</option>
+              <option value="A">A</option>
+              <option value="B">B</option>
+              <option value="C">C</option>
+            </select>
+          </label>
+          <label className="filter-label">
+            Purpose Filter:
+            <select
+              value={purposeFilter}
+              onChange={(e) => setPurposeFilter(e.target.value)}
+              className="filter-select"
+            >
+              <option value="">All</option>
+              <option value="Cultivation">Cultivation</option>
+              <option value="Sale">Sale</option>
+            </select>
+          </label>
+        </div>
+
+        <table className="crops-table">
           <thead>
             <tr>
-              <th>Crop ID</th>
-              <th>Crop Name</th>
-              <th>Purpose</th>
-              <th>Harvest Date</th>
-              <th>Total Yield</th>
-              <th>Quality</th>
-              <th>Action</th>
+              <th className="table-header">Crop ID</th>
+              <th className="table-header">Crop Name</th>
+              <th className="table-header">Purpose</th>
+              <th className="table-header">Harvest Date</th>
+              <th className="table-header">Total Yield</th>
+              <th className="table-header">Quality</th>
+              <th className="table-header">Action</th>
             </tr>
           </thead>
           <tbody>
-          {filteredCrops.map((crop) => (
-              <tr key={crop.CropID}>
-                <td>{crop.CropID}</td>
-                <td>{crop.CropName}</td>
-                <td>{crop.Purpose}</td>
-                <td>{new Date(crop.HarvestDate).toLocaleDateString()}</td>
-                <td>{crop.TotalYield}</td>
-                <td>{crop.Quality}</td>
-                <td>
-                  <button onClick={() => handleEditCrop(crop)}>Edit</button>
-                  <button onClick={() => handleDeleteCrop(crop.CropID)}>Delete</button>
+            {filteredCrops.map((crop) => (
+              <tr key={crop.CropID} className="crop-row">
+                <td className="table-cell">{crop.CropID}</td>
+                <td className="table-cell">{crop.CropName}</td>
+                <td className="table-cell">{crop.Purpose}</td>
+                <td className="table-cell">{new Date(crop.HarvestDate).toLocaleDateString()}</td>
+                <td className="table-cell">{crop.TotalYield}</td>
+                <td className="table-cell">{crop.Quality}</td>
+                <td className="table-cell">
+                  <button className="action-button" onClick={() => handleEditCrop(crop)}>Edit</button>
+                  <button className="action-button" onClick={() => handleDeleteCrop(crop.CropID)}>Delete</button>
                 </td>
               </tr>
             ))}
           </tbody>
+
         </table>
       </div>
     </div>

@@ -1,18 +1,21 @@
+// Home.js
+
 import React from 'react';
 import { Link } from 'react-router-dom';
+import './Home.scss'; // Import the theme SCSS file
 
 const Home = () => {
   return (
-    <div>
-      <h2>Home Page</h2>
-      <p>Welcome to our website! Choose an action:</p>
+    <div className="landing-page-container">
+      <h2 className="landing-page-title">Welcome to our App</h2>
+      <p className="landing-page-description">Explore the features and get started with our farm inventory management app:</p>
 
-      <div>
-        <Link to="/register">
-          <button>Register</button>
+      <div className="cta-buttons-container">
+        <Link to="/register" className="cta-link">
+          <button className="cta-button">Get Started</button>
         </Link>
-        <Link to="/login">
-          <button>Login</button>
+        <Link to="/login" className="cta-link">
+          <button className="cta-button">Login</button>
         </Link>
       </div>
     </div>

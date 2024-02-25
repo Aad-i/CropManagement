@@ -8,34 +8,23 @@ const Transactions = () => {
     const { userID } = useParams();
     const [transactions, setTransactions] = useState([]);
     const [selectedCounterparty, setSelectedCounterparty] = useState(null);
-    const [filterType, setFilterType] = useState('');
-    const [totalAmount, setTotalAmount] = useState(0.00);
 
     useEffect(() => {
         const fetchTransactions = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/transactions/user/${userID}?filter=${filterType}`);
+                const response = await axios.get(`http://localhost:5000/transactions/user/${userID}`);
+                console.log('Transactions response:', response.data); // Log the response data
                 setTransactions(response.data);
-
-                // Calculate total and available amount based on counterparty role
-                const { total } = response.data.reduce((acc, transaction) => {
-                    const price = parseFloat(transaction.TotalPrice);
-                    acc.total += transaction.CounterpartyRole === 'seller' ? -price : price;
-                    return acc;
-                }, { total: 0});
-
-                setTotalAmount(total);
             } catch (error) {
                 console.error('Error fetching transactions:', error);
             }
         };
-
         fetchTransactions();
-    }, [userID, filterType]);
-
+    }, [userID]);
+    
 
     const handleCounterpartyClick = (counterpartyID) => {
-        axios.get(`http://localhost:5000/counterparties/${counterpartyID}`)
+        axios.get(`http://localhost:5000/users/${counterpartyID}`)
             .then(response => {
                 setSelectedCounterparty(response.data);
             })
@@ -43,25 +32,15 @@ const Transactions = () => {
                 console.error('Error fetching counterparty details:', error);
             });
     };
-
+    
     const handleCloseCounterpartyDetails = () => {
         setSelectedCounterparty(null);
-    };
-
-    const handleFilterChange = (type) => {
-        setFilterType(type);
     };
 
     return (
         <div>
             <h2>Transactions</h2>
             <div>
-                <div>
-                    <button onClick={() => handleFilterChange('sold')}>View Sold Items</button>
-                    <button onClick={() => handleFilterChange('bought')}>View Bought Items</button>
-                    <button onClick={() => handleFilterChange('')}>View All Items</button>
-                </div>
-                {(filterType === 'sold' || filterType === 'bought') && <h3>Total Amount: {totalAmount.toFixed(2)}</h3>}
                 <h3>Transaction List</h3>
                 <table>
                     <thead>
@@ -74,7 +53,6 @@ const Transactions = () => {
                             <th>Total Price</th>
                             <th>Crop ID</th>
                             <th>Counterparty ID</th>
-                            <th>Counterparty Role</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -92,7 +70,6 @@ const Transactions = () => {
                                         {transaction.CounterpartyID}
                                     </button>
                                 </td>
-                                <td>{transaction.CounterpartyRole}</td>
                             </tr>
                         ))}
                     </tbody>
@@ -103,8 +80,6 @@ const Transactions = () => {
             {selectedCounterparty && (
                 <CounterpartyDetails counterparty={selectedCounterparty} onClose={handleCloseCounterpartyDetails} />
             )}
-
-            
         </div>
     );
 };
