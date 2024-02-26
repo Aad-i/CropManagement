@@ -75,25 +75,25 @@ const Inventory = () => {
     }
   };
 
-  const handleUpdateInventoryItem = async () => {
-    try {
-      await axios.put(`http://localhost:5000/inventory/user/${userID}/${newInventoryItem.InventoryID}`, newInventoryItem);
-      // Refresh inventory data after updating an item
-      const inventoryResponse = await axios.get(`http://localhost:5000/inventory/user/${userID}`);
-      setInventory(inventoryResponse.data);
-      // Clear the newInventoryItem state
-      setNewInventoryItem({
-        InventoryID: '',
-        LocationID: '',
-        CropID: '',
-        TotalCapacity: 0,
-        OccupiedCapacity: 0,
-        UserID: userID,
-      });
-    } catch (error) {
-      console.error('Error updating inventory item:', error);
-    }
-  };
+//   const handleUpdateInventoryItem = async () => {
+//     try {
+//       await axios.put(`http://localhost:5000/inventory/user/${userID}/${newInventoryItem.InventoryID}`, newInventoryItem);
+//       // Refresh inventory data after updating an item
+//       const inventoryResponse = await axios.get(`http://localhost:5000/inventory/user/${userID}`);
+//       setInventory(inventoryResponse.data);
+//       // Clear the newInventoryItem state
+//       setNewInventoryItem({
+//         InventoryID: '',
+//         LocationID: '',
+//         CropID: '',
+//         TotalCapacity: 0,
+//         OccupiedCapacity: 0,
+//         UserID: userID,
+//       });
+//     } catch (error) {
+//       console.error('Error updating inventory item:', error);
+//     }
+//   };
 
   const handleDeleteInventoryItem = async (inventoryID) => {
     try {

@@ -27,6 +27,9 @@
             width: 100%;
             border-collapse: collapse;
             overflow-x: auto; // Enable horizontal scrolling on smaller screens
+        //     &:nth-child(even) {
+        //         background-color: #f2f2f2; // Light gray background for odd entries
+        // }
 
             .table-header {
                 background-color: #4CAF50;
@@ -46,17 +49,6 @@
 
                     &:hover {
                         color: #00bcd4; // Lighter cyan color on hover
-                    }
-                }
-
-                // Alternate colors for mobile view
-                @media screen and (max-width: 768px) {
-                    &:nth-child(odd) {
-                        background-color: #f2f2f2; // Light gray background for odd entries
-                    }
-
-                    &:nth-child(even) {
-                        background-color: #ffffff; // White background for even entries
                     }
                 }
             }

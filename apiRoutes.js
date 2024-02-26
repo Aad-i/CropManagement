@@ -1257,6 +1257,22 @@ router.delete('/:equipmentID', async (req, res) => {
 
 /************************************************************************************************* */
 // Get equipment usage items related to a specific user
+router.get('/equipments-usage/user/:userID', async (req, res) => {
+  const userID = req.params.userID;
+
+  try {
+    const result = await pool.query(
+      'SELECT * FROM equipmentusage WHERE EquipmentID IN (SELECT EquipmentID FROM equipments WHERE UserID = ?)',
+      [userID]
+    );
+
+    res.json(result[0]); // Assuming the result is an array of equipment usage items
+  } catch (error) {
+    console.error('Error fetching equipment usage:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 // Get equipment usage items and details related to a specific user
 // Get equipment usage details with related equipment information for a specific user
 

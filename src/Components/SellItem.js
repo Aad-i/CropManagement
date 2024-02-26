@@ -72,9 +72,9 @@ const SellItem = () => {
     };
 
     // Function to handle real-time calculation of total price
-    const calculateTotalPrice = () => {
-        return formData.unitPrice * formData.totalYield;
-    };
+    // const calculateTotalPrice = () => {
+    //     return formData.unitPrice * formData.totalYield;
+    // };
 
     // Function to handle form submission
     const handleSubmit = async (e) => {

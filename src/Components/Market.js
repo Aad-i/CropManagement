@@ -42,7 +42,7 @@ const Market = () => {
       <button className="sell-item-button" onClick={handleSell}>Sell Item</button>
       <table className="market-table">
         <thead>
-          <tr className>
+          <tr>
             <th className="table-header">Item ID</th>
             <th className="table-header">Item Name</th>
             <th className="table-header">Quantity</th>
