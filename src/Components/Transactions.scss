@@ -1,0 +1,71 @@
+// Transactions.scss
+
+.transactions-container {
+    position: relative;
+    text-align: center;
+
+    .counterparty-popup {
+        position: fixed;
+    }
+
+    .transactions-title {
+        font-size: 2rem;
+        color: #4CAF50;
+        margin-bottom: 20px;
+    }
+
+    .transaction-list {
+        margin: 20px;
+
+        .list-title {
+            font-size: 1.5rem;
+            color: #333333;
+            margin-bottom: 10px;
+        }
+
+        .transactions-table {
+            width: 100%;
+            border-collapse: collapse;
+            overflow-x: auto; // Enable horizontal scrolling on smaller screens
+
+            .table-header {
+                background-color: #4CAF50;
+                color: white;
+                padding: 15px 10px;
+            }
+
+            .table-cell {
+                border: 1px solid #ddd;
+                padding: 15px 10px;
+                font-size: 0.9rem;
+
+                .counterparty-id {
+                    transition: background-color 0.3s ease-in;
+
+                    &:hover {
+                        cursor: pointer;
+                        background-color: #e0f7fa; // Light blue background on hover
+                    }
+                }
+            }
+
+            // Responsive styles
+            @media screen and (max-width: 768px) {
+
+                .table-header,
+                .table-cell,
+                .counterparty-id {
+                    display: block;
+                    width: 100%;
+                    box-sizing: border-box;
+                }
+
+                .table-cell {
+                    &:last-child {
+                        border-bottom: 2px solid #333333;  // Add dark border after each entry
+                    }
+                }
+            }
+        }
+    }
+}

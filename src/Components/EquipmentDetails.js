@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import './EquipmentDetails.scss'
 
 const EquipmentsDetails = () => {
     const { userID } = useParams();
@@ -8,7 +9,7 @@ const EquipmentsDetails = () => {
     const [inventories, setInventories] = useState([]);
     const [totalQuantityUsedMap, setTotalQuantityUsedMap] = useState({});
     const [selectedInventory, setSelectedInventory] = useState('');
-    
+
     const [newEquipment, setNewEquipment] = useState({
         EquipmentID: '',
         InventoryID: '',
@@ -22,25 +23,25 @@ const EquipmentsDetails = () => {
         try {
             const response = await axios.get(`http://localhost:5000/equipments/user/${userID}`);
             setEquipments(response.data);
-    
+
             // Fetch and set total quantity used for each equipment
             const totalQuantityUsedPromises = response.data.map(async (equipment) => {
                 const totalQuantityUsedResponse = await axios.get(`http://localhost:5000/equipments-usage/total/${equipment.EquipmentID}`);
                 return { equipmentID: equipment.EquipmentID, totalQuantityUsed: totalQuantityUsedResponse.data.totalQuantityUsed };
             });
-    
+
             const totalQuantityUsedResults = await Promise.all(totalQuantityUsedPromises);
             const totalQuantityUsedMapResult = totalQuantityUsedResults.reduce((acc, { equipmentID, totalQuantityUsed }) => {
                 acc[equipmentID] = totalQuantityUsed;
                 return acc;
             }, {});
-    
+
             setTotalQuantityUsedMap(totalQuantityUsedMapResult);
         } catch (error) {
             console.error('Error fetching equipment details:', error);
         }
     }, [userID, setTotalQuantityUsedMap]);
-    
+
 
     useEffect(() => {
         fetchEquipments();
@@ -135,23 +136,28 @@ const EquipmentsDetails = () => {
         : equipments;
 
     return (
-        <div>
-            <h2>All Equipments Details</h2>
+        <div className="all-equipments-container">
+            <h2 className="equipments-heading">All Equipments Details</h2>
+
             {/* Form for adding/editing equipment */}
-            <div>
-                <h3>{isEditing ? 'Edit Equipment' : 'Add New Equipment'}</h3>
-                <label>
+            <div className="equipment-form">
+                <h3 className="form-title">{isEditing ? 'Edit Equipment' : 'Add New Equipment'}</h3>
+
+                <label className="input-label">
                     Equipment ID:
                     <input
+                        className="input-field"
                         type="text"
                         value={newEquipment.EquipmentID}
                         onChange={(e) => setNewEquipment({ ...newEquipment, EquipmentID: e.target.value })}
                     />
                 </label>
                 <br />
-                <label>
+
+                <label className="input-label">
                     Inventory ID:
                     <select
+                        className="select-field"
                         value={newEquipment.InventoryID}
                         onChange={(e) => setNewEquipment({ ...newEquipment, InventoryID: e.target.value })}
                     >
@@ -164,28 +170,33 @@ const EquipmentsDetails = () => {
                     </select>
                 </label>
                 <br />
-                <label>
+
+                <label className="input-label">
                     Equipment Name:
                     <input
+                        className="input-field"
                         type="text"
                         value={newEquipment.EquipmentName}
                         onChange={(e) => setNewEquipment({ ...newEquipment, EquipmentName: e.target.value })}
                     />
                 </label>
                 <br />
-                <label>
+
+                <label className="input-label">
                     Quantity:
                     <input
+                        className="input-field"
                         type="number"
                         value={newEquipment.Quantity}
                         onChange={(e) => setNewEquipment({ ...newEquipment, Quantity: e.target.value })}
                     />
                 </label>
                 <br />
+
                 {isEditing ? (
                     <>
-                        <button onClick={handleUpdateEquipment}>Update Equipment</button>
-                        <button onClick={() => {
+                        <button className="action-button update-button" onClick={handleUpdateEquipment}>Update Equipment</button>
+                        <button className="action-button cancel-button" onClick={() => {
                             setIsEditing(false);
                             setEditingEquipmentID(null);
                             setNewEquipment({
@@ -197,14 +208,16 @@ const EquipmentsDetails = () => {
                         }}>Cancel</button>
                     </>
                 ) : (
-                    <button onClick={handleAddEquipment}>Add Equipment</button>
+                    <button className="action-button add-button" onClick={handleAddEquipment}>Add Equipment</button>
                 )}
             </div>
-            <div>
+
+            <div className='equipments-display-table'>
                 {/* Dropdown for selecting inventory */}
-                <label>
+                <label className="select-label">
                     Select Inventory:
                     <select
+                        className="select-filter-inventory"
                         value={selectedInventory}
                         onChange={handleInventoryChange}
                     >
@@ -217,28 +230,28 @@ const EquipmentsDetails = () => {
                     </select>
                 </label>
 
-                <table>
+                <table className="equipments-table">
                     <thead>
                         <tr>
-                            <th>Equipment ID</th>
-                            <th>Inventory ID</th>
-                            <th>Equipment Name</th>
-                            <th>Quantity Used</th>
-                            <th>Total Quantity</th>
-                            <th>Action</th>
+                            <th className="table-header">Equipment ID</th>
+                            <th className="table-header">Inventory ID</th>
+                            <th className="table-header">Equipment Name</th>
+                            <th className="table-header">Quantity Used</th>
+                            <th className="table-header">Total Quantity</th>
+                            <th className="table-header">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         {filteredEquipments.map((equipment) => (
-                            <tr key={equipment.EquipmentID}>
-                                <td>{equipment.EquipmentID}</td>
-                                <td>{equipment.InventoryID}</td>
-                                <td>{equipment.EquipmentName}</td>
-                                <td>{totalQuantityUsedMap[equipment.EquipmentID]}</td>
-                                <td>{equipment.Quantity}</td>
-                                <td>
-                                    <button onClick={() => handleEditEquipment(equipment.EquipmentID)}>Edit</button>
-                                    <button onClick={() => handleDeleteEquipment(equipment.EquipmentID)}>Delete</button>
+                            <tr key={equipment.EquipmentID} className='table-row'>
+                                <td className="table-cell">{equipment.EquipmentID}</td>
+                                <td className="table-cell">{equipment.InventoryID}</td>
+                                <td className="table-cell">{equipment.EquipmentName}</td>
+                                <td className="table-cell">{totalQuantityUsedMap[equipment.EquipmentID]}</td>
+                                <td className="table-cell">{equipment.Quantity}</td>
+                                <td className="table-cell">
+                                    <button className="action-button edit-button" onClick={() => handleEditEquipment(equipment.EquipmentID)}>Edit</button>
+                                    <button className="action-button delete-button" onClick={() => handleDeleteEquipment(equipment.EquipmentID)}>Delete</button>
                                 </td>
                             </tr>
                         ))}

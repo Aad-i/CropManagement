@@ -1,8 +1,8 @@
-// Transactions.js (React)
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import CounterpartyDetails from './CounterPartyDetails';
+import './Transactions.scss'; // Import your SCSS file
 
 const Transactions = () => {
     const { userID } = useParams();
@@ -21,7 +21,6 @@ const Transactions = () => {
         };
         fetchTransactions();
     }, [userID]);
-    
 
     const handleCounterpartyClick = (counterpartyID) => {
         axios.get(`http://localhost:5000/users/${counterpartyID}`)
@@ -32,43 +31,40 @@ const Transactions = () => {
                 console.error('Error fetching counterparty details:', error);
             });
     };
-    
+
     const handleCloseCounterpartyDetails = () => {
         setSelectedCounterparty(null);
     };
 
     return (
-        <div>
-            <h2>Transactions</h2>
-            <div>
-                <h3>Transaction List</h3>
-                <table>
+        <div className="transactions-container">
+            <h2 className='transactions-title'>Transactions</h2>
+            <div className="transaction-list">
+                <table className="transactions-table">
                     <thead>
                         <tr>
-                            <th>Transaction ID</th>
-                            <th>Transaction Date</th>
-                            <th>Transaction Time</th>
-                            <th>Quantity</th>
-                            <th>Unit Price</th>
-                            <th>Total Price</th>
-                            <th>Crop ID</th>
-                            <th>Counterparty ID</th>
+                            <th className="table-header">Transaction ID</th>
+                            <th className="table-header">Transaction Date</th>
+                            <th className="table-header">Transaction Time</th>
+                            <th className="table-header">Quantity</th>
+                            <th className="table-header">Unit Price</th>
+                            <th className="table-header">Total Price</th>
+                            <th className="table-header">Crop ID</th>
+                            <th className="table-header">Counterparty ID</th>
                         </tr>
                     </thead>
                     <tbody>
                         {transactions.map((transaction) => (
                             <tr key={transaction.TransactionID}>
-                                <td>{transaction.TransactionID}</td>
-                                <td>{new Date(transaction.TransactionDate).toLocaleDateString()}</td> 
-                                <td>{transaction.TransactionTime}</td>
-                                <td>{transaction.Quantity}</td>
-                                <td>{transaction.UnitPrice}</td>
-                                <td>{transaction.TotalPrice}</td>
-                                <td>{transaction.CropID}</td>
-                                <td>
-                                    <button onClick={() => handleCounterpartyClick(transaction.CounterpartyID)}>
+                                <td className="table-cell">{transaction.TransactionID}</td>
+                                <td className="table-cell">{new Date(transaction.TransactionDate).toLocaleDateString()}</td>
+                                <td className="table-cell">{transaction.TransactionTime}</td>
+                                <td className="table-cell">{transaction.Quantity}</td>
+                                <td className="table-cell">{transaction.UnitPrice}</td>
+                                <td className="table-cell">{transaction.TotalPrice}</td>
+                                <td className="table-cell">{transaction.CropID}</td>
+                                <td className="table-cell counterparty-id" onClick={() => handleCounterpartyClick(transaction.CounterpartyID)}>
                                         {transaction.CounterpartyID}
-                                    </button>
                                 </td>
                             </tr>
                         ))}
@@ -78,7 +74,9 @@ const Transactions = () => {
 
             {/* Counterparty Details Popup */}
             {selectedCounterparty && (
-                <CounterpartyDetails counterparty={selectedCounterparty} onClose={handleCloseCounterpartyDetails} />
+                <div className="counterparty-popup">
+                    <CounterpartyDetails counterparty={selectedCounterparty} onClose={handleCloseCounterpartyDetails} />
+                </div>
             )}
         </div>
     );

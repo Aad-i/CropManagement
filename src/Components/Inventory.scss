@@ -1,0 +1,244 @@
+.inventory-container {
+    text-align: center;
+
+    .inventory-title {
+        font-size: 2rem;
+        color: #4CAF50;
+        margin-bottom: 20px;
+    }
+
+    .inventory-form {
+        width: 100%;
+        max-width: 400px;
+        margin: 2em auto;
+        padding: 15px;
+        background-color: #FFFFFF;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+        .form-title {
+            font-size: 1.5rem;
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+
+        .form-label {
+            text-align: left;
+            display: block;
+            margin-bottom: 10px;
+            color: #1E4151;
+            /* Updated color */
+        }
+
+        .form-input,
+        .form-select {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            color: #333333;
+            /* Color for input text */
+        }
+
+        .toggle-location-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .form-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+    }
+
+    .location-form {
+        width: 100%;
+        max-width: 400px;
+        margin: 2em auto;
+        padding: 15px;
+        background-color: #FFFFFF;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+        .form-title {
+            font-size: 1.5rem;
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+
+        .form-label {
+            text-align: left;
+            display: block;
+            margin-bottom: 10px;
+            color: #4CAF50;
+        }
+
+        .form-input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+
+        .form-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+    }
+
+    .inventory-list {
+        padding: 15px;
+        background-color: #FFFFFF;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+
+        .list-title {
+            font-size: 1.5rem;
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+
+        .form-label {
+            text-align: left;
+            display: block;
+            margin-bottom: 10px;
+            color: #4CAF50;
+        }
+
+        .filter-select {
+            width: calc(20% - 20px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+
+        .inventory-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+
+            .table-header {
+                background-color: #4CAF50;
+                color: white;
+                padding: 12px;
+                font-size: 1rem;
+            }
+
+            .table-row {
+                td {
+                    border: 1px solid #ddd;
+                    padding: 12px;
+                    font-size: 1rem;
+                }
+
+                .action-button {
+                    background-color: #4CAF50;
+                    color: white;
+                    padding: 8px 12px;
+                    margin-right: 4px;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    font-size: 1rem;
+                    transition: background-color 0.3s;
+                    /* Added transition for a smooth effect */
+
+                    &:hover {
+                        background-color: #45a049;
+                        /* Change color on hover */
+                    }
+                }
+            }
+        }
+    }
+
+    // Add responsive styles
+    @media screen and (max-width: 768px) {
+
+        .inventory-form,
+        .location-form,
+        .inventory-list {
+            padding: 10px;
+
+            .form-input,
+            .form-select,
+            .form-button,
+            .toggle-location-button,
+            .table-header {
+                font-size: 1rem;
+            }
+
+            .form-label,
+            .list-title {
+                font-size: 1.2rem;
+            }
+
+            .filter-select {
+                width: 100%;
+            }
+
+            .inventory-table {
+                .table-header{
+                    display: block;
+                }
+                .table-row {
+                    display: block;
+                    margin-bottom: 15px;
+                    border-bottom: 2px solid #333333;  // Add dark border after each entry
+
+                    td {
+                        display: block;
+                        width: 100%;
+                        box-sizing: border-box;
+                        padding: 12px;
+                        font-size: 1rem;
+
+                        &:first-child {
+                            padding-top: 20px;
+                        }
+
+                        &:last-child {
+                            padding-bottom: 20px;
+                        }
+                    }
+
+                    .action-button {
+                        margin-top: 10px;
+                        padding: 10px 15px;
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+}

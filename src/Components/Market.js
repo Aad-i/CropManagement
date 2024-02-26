@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
+import './Market.scss'
 
 const Market = () => {
   const navigate = useNavigate();
@@ -36,35 +37,35 @@ const Market = () => {
   };
 
   return (
-    <div>
+    <div className="market-container">
       <h2>Market Page</h2>
-      <button onClick={handleSell}>Sell Item</button>
-      <table>
+      <button className="sell-item-button" onClick={handleSell}>Sell Item</button>
+      <table className="market-table">
         <thead>
-          <tr>
-            <th>Item ID</th>
-            <th>Item Name</th>
-            <th>Quantity</th>
-            <th>Grade</th>
-            <th>Unit Price</th>
-            <th>Price</th>
-            <th>Seller ID</th>
-            <th>Action</th>
+          <tr className>
+            <th className="table-header">Item ID</th>
+            <th className="table-header">Item Name</th>
+            <th className="table-header">Quantity</th>
+            <th className="table-header">Grade</th>
+            <th className="table-header">Unit Price</th>
+            <th className="table-header">Price</th>
+            <th className="table-header">Seller ID</th>
+            <th className="table-header">Action</th>
           </tr>
         </thead>
         <tbody>
           {marketItems.map((item) => (
             item.IsHidden === undefined || item.IsHidden === 0 ? (
-              <tr key={item.ItemID}>
-                <td>{item.ItemID}</td>
-                <td>{item.CropName}</td>
-                <td>{item.TotalYield}</td>
-                <td>{item.Quality}</td>
-                <td>{item.UnitPrice}</td>
-                <td>{item.Price}</td>
-                <td>{item.SellerID}</td>
-                <td>
-                  <button onClick={() => handleBuy(item)}>Buy</button>
+              <tr key={item.ItemID} className="table-row">
+                <td className="table-cell">{item.ItemID}</td>
+                <td className="table-cell">{item.CropName}</td>
+                <td className="table-cell">{item.TotalYield}</td>
+                <td className="table-cell">{item.Quality}</td>
+                <td className="table-cell">{item.UnitPrice}</td>
+                <td className="table-cell">{item.Price}</td>
+                <td className="table-cell">{item.SellerID}</td>
+                <td className="table-cell">
+                  <button className="buy-button" onClick={() => handleBuy(item)}>Buy</button>
                 </td>
               </tr>
             ) : null

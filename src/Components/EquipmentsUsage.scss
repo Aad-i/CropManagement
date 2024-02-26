@@ -1,0 +1,91 @@
+// EquipmentsUsage.scss
+
+.equipments-usage-container {
+    position: relative;
+    text-align: center;
+    padding: 20px;
+
+    .view-all-btn {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+            background-color: #45a049; // Darker shade on hover
+        }
+    }
+
+    .equipments-table-container {
+        margin-top: 20px;
+
+        .equipments-table {
+            width: 100%;
+            border-collapse: collapse;
+            overflow-x: auto; // Enable horizontal scrolling on smaller screens
+
+            .table-header {
+                background-color: #4CAF50;
+                color: white;
+                padding: 15px 10px;
+            }
+
+            .table-cell {
+                border: 1px solid #ddd;
+                padding: 15px 10px;
+                font-size: 0.9rem;
+
+                .worker-id {
+                    cursor: pointer;
+                    color: #008080; // Dark cyan color
+                    transition: color 0.3s ease;
+
+                    &:hover {
+                        color: #00bcd4; // Lighter cyan color on hover
+                    }
+                }
+
+                // Alternate colors for mobile view
+                @media screen and (max-width: 768px) {
+                    &:nth-child(odd) {
+                        background-color: #f2f2f2; // Light gray background for odd entries
+                    }
+
+                    &:nth-child(even) {
+                        background-color: #ffffff; // White background for even entries
+                    }
+                }
+            }
+        }
+    }
+
+    // Responsive styles
+    @media screen and (max-width: 768px) {
+
+        .table-header,
+        .table-cell,
+        .worker-id {
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .table-row {
+            border-bottom: 2px solid #333333; // Add dark border after each entry
+
+            .table-cell {
+                // margin-bottom: 10px; // Add spacing between entries
+
+                &:last-child {
+                    margin-bottom: 0; // Remove spacing after the last entry
+                }
+            }
+        }
+
+
+    }
+}

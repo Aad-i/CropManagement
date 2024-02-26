@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import WorkerDetails from './WorkerDetails'; // Import the WorkerDetails component
+import './EquipmentsUsage.scss'
 
 const EquipmentsUsage = () => {
   const { userID } = useParams();
@@ -45,41 +46,41 @@ const EquipmentsUsage = () => {
   };
 
   return (
-    <div>
-      <h2>Equipment Usage</h2>
+    <div className="equipments-usage-container">
+      <h2 className="equipments-usage-title">Equipment Usage</h2>
 
-      <button onClick={handleViewAllEquipments}>
+      <button className="view-all-btn" onClick={handleViewAllEquipments}>
         View All Equipments
       </button>
 
-      <div>
-        <table>
+      <div className="equipments-table-container">
+        <table className="equipments-table">
           <thead>
             <tr>
-              <th>Equipment ID</th>
-              <th>Usage Date</th>
-              <th>Worker ID</th>
-              <th>Quantity Used</th>
-              <th>Borrowing Time</th>
-              <th>Returning Time</th>
-              <th>Purpose</th>
+              <th className="table-header">Equipment ID</th>
+              <th className="table-header">Usage Date</th>
+              <th className="table-header">Worker ID</th>
+              <th className="table-header">Quantity Used</th>
+              <th className="table-header">Borrowing Time</th>
+              <th className="table-header">Returning Time</th>
+              <th className="table-header">Purpose</th>
             </tr>
           </thead>
           <tbody>
             {equipmentUsage.map((usage) => (
-              <tr key={`${usage.EquipmentID}-${usage.UsageDate}`}>
-                <td>{usage.EquipmentID}</td>
-                <td>{new Date(usage.UsageDate).toLocaleDateString()}</td> 
+              <tr key={`${usage.EquipmentID}-${usage.UsageDate}`} className='table-row'>
+                <td className="table-cell">{usage.EquipmentID}</td>
+                <td className="table-cell">{new Date(usage.UsageDate).toLocaleDateString()}</td> 
                 <td
+                  className="table-cell worker-id"
                   onClick={() => handleWorkerClick(usage.WorkerID)}
-                  style={{ cursor: 'pointer', color: 'blue' }}
                 >
                   {usage.WorkerID}
                 </td>
-                <td>{usage.QuantityUsed}</td>
-                <td>{usage.BorrowingTime}</td>
-                <td>{usage.ReturningTime}</td>
-                <td>{usage.Purpose}</td>
+                <td className="table-cell">{usage.QuantityUsed}</td>
+                <td className="table-cell">{usage.BorrowingTime}</td>
+                <td className="table-cell">{usage.ReturningTime}</td>
+                <td className="table-cell">{usage.Purpose}</td>
               </tr>
             ))}
           </tbody>

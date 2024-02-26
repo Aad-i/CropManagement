@@ -1,0 +1,110 @@
+// Market.scss
+
+.market-container {
+    text-align: center;
+    padding: 20px;
+
+    h2 {
+        font-size: 2rem;
+        color: #4CAF50;
+        margin-bottom: 20px;
+    }
+
+    .sell-item-button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 12px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+    }
+
+    .market-table {
+        width: 100%;
+        border-collapse: collapse;
+        overflow-x: auto;
+
+        .table-header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 10px;
+        }
+
+        .table-row {
+            background-color: #f2f2f2;
+
+            &:nth-child(even) {
+                background-color: #e0e0e0;
+            }
+
+            .table-cell {
+                border: 1px solid #ddd;
+                padding: 15px 10px;
+                font-size: 0.9rem;
+
+                // Add spacing between table cells
+                &:not(:last-child) {
+                    margin-right: 5px;
+                }
+            }
+
+            .buy-button {
+                background-color: #2196F3;
+                color: #fff;
+                padding: 10px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+
+                // Adjust margin in mobile view
+                @media screen and (max-width: 768px) {
+                    margin-top: 10px;
+                }
+            }
+        }
+    }
+
+    // Responsive styles
+    @media screen and (max-width: 768px) {
+        .table-header {
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .table-row {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+
+            .table-cell {
+                display: block;
+                width: 100%;
+                box-sizing: border-box;
+                text-align: left;
+                padding: 10px;
+
+                &:first-child {
+                    padding-top: 30px; // Remove top padding for subsequent elements
+                }
+
+                &:last-child {
+                    padding-bottom: 30px; // Remove spacing after the last entry
+                    border-bottom: 2px #333333;
+                }
+            }
+
+            .buy-button {
+                margin-top: 10px;
+            }
+        }
+    }
+}

@@ -1,0 +1,234 @@
+// EquipmentsDetails.scss
+
+.all-equipments-container {
+    text-align: center;
+    margin: 20px;
+
+    .equipments-heading {
+        font-size: 2rem;
+        color: #4CAF50;
+        margin-bottom: 20px;
+    }
+
+    .equipment-form {
+        width: 100%;
+        max-width: 400px;
+        margin: 2em auto;
+        padding: 15px;
+        background-color: #FFFFFF;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+        .form-title {
+            font-size: 1.5rem;
+            color: #4CAF50;
+            margin-bottom: 10px;
+
+        }
+
+        .input-label {
+            text-align: left;
+            display: block;
+            margin-bottom: 10px;
+            color: #1E4151;
+            /* Updated color */
+
+            .select-field {
+                width: calc(100% - 20px);
+                padding: 10px;
+                margin-bottom: 10px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                box-sizing: border-box;
+                font-size: 1rem;
+
+                &:focus {
+                    outline: none;
+                    border-color: #4CAF50; // Change border color on focus
+                }
+            }
+
+            .input-field {
+                width: calc(100% - 20px);
+                padding: 10px;
+                margin-bottom: 10px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                box-sizing: border-box;
+                font-size: 1rem;
+                color: #333333;
+                /* Color for input text */
+
+            }
+        }
+
+        .action-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+    }
+
+    .select-label {
+        text-align: left;
+        display: block;
+        margin-bottom: 10px;
+        color: #4CAF50;
+
+        .select-filter-inventory {
+            width: calc(20% - 20px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 1rem;
+
+            &:focus {
+                outline: none;
+                border-color: #4CAF50; // Change border color on focus
+            }
+
+        }
+    }
+
+    .equipments-table {
+        width: 100%;
+        border-collapse: collapse;
+        overflow-x: auto;
+        margin-top: 20px;
+
+        .table-header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 10px;
+        }
+
+        .table-row {
+            background-color: #f2f2f2;
+
+            &:nth-child(even) {
+                background-color: #e0e0e0;
+            }
+
+            &:first-child {
+                padding-top: 20px;
+            }
+
+            &:last-child {
+                padding-bottom: 20px;
+            }
+
+            .table-cell {
+                border: 1px solid #ddd;
+                padding: 15px 10px;
+                font-size: 0.9rem;
+
+                .edit-button,
+                .delete-button {
+                    background-color: #2196F3;
+                    color: #fff;
+                    padding: 10px;
+                    border: none;
+                    border-radius: 4px;
+                    margin-right: 5px;
+                    cursor: pointer;
+                }
+
+                .delete-button {
+                    background-color: #f44336;
+                }
+            }
+        }
+
+
+
+
+    }
+
+    // Responsive styles
+    @media screen and (max-width: 768px) {
+
+
+
+        .input-label {
+
+            .input-field,
+            .select-field {
+                width: 100%;
+                font-size: 1rem;
+                margin-bottom: 8px;
+            }
+        }
+
+        // .select-label {
+        //     .select-field {
+        .equipment-form {
+            width: 100%;
+            max-width: 350px;
+        }
+
+        .equipments-display-table {
+            width: 100%;
+        }
+
+        .select-label {
+
+            .select-filter-inventory {
+                width: 100%;
+                font-size: 1rem;
+                margin-bottom: 8px;
+            }
+        }
+
+        .action-button {
+            font-size: 1rem;
+        }
+
+
+        .equipments-table {
+
+
+            .table-header {
+                display: block;
+                // width: 100%;
+                border: none;
+            }
+
+            .table-row {
+                display: block;
+                // width: 100%;
+                box-sizing: border-box;
+                margin-bottom: 10px;
+                border-bottom: 2px solid #333333; // Add a dark border after each entry
+
+                .table-cell {
+                    display: block;
+                    width: 100%;
+                    box-sizing: border-box;
+                    text-align: left;
+                    padding: 10px;
+
+                    &:first-child {
+                        padding-top: 15px;
+                    }
+
+                    &:last-child {
+                        padding-bottom: 15px;
+                    }
+
+                    .edit-button,
+                    .delete-button {
+                        width: 100%;
+                        margin-top: 8px;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -284,7 +284,7 @@ const Crops = () => {
                 <td className="table-cell">{new Date(crop.HarvestDate).toLocaleDateString()}</td>
                 <td className="table-cell">{crop.TotalYield}</td>
                 <td className="table-cell">{crop.Quality}</td>
-                <td className="table-cell">
+                <td className="table-cell action-buttons">
                   <button className="action-button" onClick={() => handleEditCrop(crop)}>Edit</button>
                   <button className="action-button" onClick={() => handleDeleteCrop(crop.CropID)}>Delete</button>
                 </td>

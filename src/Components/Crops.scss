@@ -1,148 +1,170 @@
 .crops-container {
-    text-align: center;
-  
-    .crops-title {
-      font-size: 2rem;
-      color: #4CAF50;
-      margin-bottom: 20px;
+  text-align: center;
+
+  .crops-title {
+    font-size: 2rem;
+    color: #4CAF50;
+    margin-bottom: 20px;
+  }
+
+  .create-crop-section {
+    width: 100%;
+    max-width: 400px;
+    margin: 2em auto;
+    padding: 15px;
+    background-color: #FFFFFF;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    .create-crop-title {
+      font-size: 1.5rem;
+      color: #333333;
+      margin-bottom: 10px;
     }
-  
-    .create-crop-section {
-        width: 100%; // Adjust width as needed
-        max-width: 400px; // Set a maximum width
-        margin: 2em auto; // Center the form
-    //   margin-bottom: 20px;
-      padding: 15px;
-      background-color: #FFFFFF;
+
+    .form-label {
+      text-align: left;
+      display: block;
+      margin-bottom: 2px;
+      color: #1E4151;
+      /* Updated color */
+
+    }
+
+    .form-input,
+    .form-select {
+      width: calc(100% - 20px);
+      padding: 8px;
+      margin-bottom: 2px;
+      margin-top: 5px;
       border: 1px solid #ddd;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  
-      .create-crop-title {
-        font-size: 1.5rem;
-        color: #333333;
-        margin-bottom: 10px;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 0.8rem;
+      color: #333333;
+      /* Color for input text */
+
+    }
+
+    .form-button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 15px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+  }
+
+  .crops-list-section {
+    padding: 15px;
+    background-color: #FFFFFF;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    .crops-list-title {
+      font-size: 1.5rem;
+      color: #333333;
+      margin-bottom: 10px;
+    }
+
+    .filter-section {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+
+      .filter-label {
+        margin-right: 8px;
       }
-  
-      .form-label {
-        text-align: left;
-        display: block;
-        margin-bottom: 2px;
-      }
-  
-      .form-input,
-      .form-select {
-        width: calc(100% - 20px);
+
+      .filter-select {
         padding: 8px;
-        margin-bottom: 2px;
-        margin-top: 5px;
         border: 1px solid #ddd;
         border-radius: 4px;
         box-sizing: border-box;
-        font-size: 0.8rem;
-      }
-  
-      .form-button {
-        background-color: #4CAF50;
-        color: white;
-        padding: 8px 12px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
         font-size: 0.9rem;
       }
     }
-  
-    .crops-list-section {
-      padding: 15px;
-      background-color: #FFFFFF;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  
-      .crops-list-title {
-        font-size: 1.5rem;
-        color: #333333;
-        margin-bottom: 10px;
+
+    .crops-table {
+      width: 100%;
+      border-collapse: collapse;
+
+      .table-header {
+        background-color: #4CAF50;
+        color: white;
+        padding: 8px;
       }
-  
-      .filter-section {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 15px;
-  
-        .filter-label {
-          margin-right: 8px;
-        }
-  
-        .filter-select {
-          padding: 8px;
+
+      .crop-row {
+        td {
           border: 1px solid #ddd;
+          padding: 8px;
+          font-size: 0.9rem;
+        }
+
+        .action-button {
+          background-color: #4CAF50;
+          color: white;
+          padding: 15px 20px;
+          margin-right: 5px;
+          border: none;
           border-radius: 4px;
-          box-sizing: border-box;
+          cursor: pointer;
           font-size: 0.9rem;
         }
       }
-  
+    }
+  }
+
+  // Add responsive styles
+  @media screen and (max-width: 768px) {
+    .create-crop-section {
+      padding: 10px;
+      width: 100%;
+    }
+
+    .form-input,
+    .form-select,
+    .form-button,
+    .table-header {
+      font-size: 1rem;
+    }
+
+    .crops-list-section {
       .crops-table {
-        width: 100%;
-        border-collapse: collapse;
-  
         .table-header {
-          background-color: #4CAF50;
-          color: white;
-          padding: 8px;
+          display: block;
+          padding: 12px;
         }
-  
+
         .crop-row {
-          td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            font-size: 0.9rem;
+          border-bottom: 2px solid #333333;  // Add dark border after each entry
+
+          .table-cell {
+            display: block;
+            padding: 12px;
+            font-size: 0.9rem; // Reduced font size for table body rows
           }
-  
-          .action-button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 6px 10px;
-            margin-right: 4px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.8rem;
+
+          .action-buttons{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+
+            .action-button {
+              // flex-direction: column;
+              padding: 10px 15px;
+              font-size: 0.9rem;
+            }
           }
+
+
         }
       }
     }
-  
-    // Add responsive styles
-    @media screen and (max-width: 768px) {
-        .create-crop-section {
-          padding: 10px;
-          width: 100%;
-        }
-    
-        .form-input,
-        .form-select,
-        .form-button,
-        .table-header{
-          font-size: 0.8rem;
-        }
-    
-        .crops-list-section {
-          .table-header {
-            // display: none;
-          }
-    
-          .crop-row {
-            .table-cell {
-                font-size: 0.8rem; // Reduced font size for table body rows
-              }
-            .action-buttons {
-              flex-direction: column;
-            }
-          }
-        }
-      }
   }
-  
+}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
+import './SellItem.scss'
 
 const SellItem = () => {
     const navigate = useNavigate();
@@ -145,15 +146,16 @@ const SellItem = () => {
     }, [navigate]);
 
     return (
-        <div>
+        <div className="sell-item-container">
             <h2>Sell Your Item</h2>
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="cropID">Select Crop ID:</label>
+            <form onSubmit={handleSubmit} className="sell-item-form">
+                <label htmlFor="cropID" className="form-label">Select Crop ID:</label>
                 <select
                     id="cropID"
                     value={formData.cropID}
                     onChange={(e) => handleCropSelection(e.target.value)}
                     required
+                    className="form-select"
                 >
                     <option value="" disabled>Select a crop</option>
                     {availableCrops.map((crop) => (
@@ -163,47 +165,51 @@ const SellItem = () => {
                     ))}
                 </select>
 
-                <label htmlFor="unitPrice">Set Price:</label>
+                <label htmlFor="unitPrice" className="form-label">Set Price:</label>
                 <input
                     type="number"
                     id="unitPrice"
                     value={formData.unitPrice}
                     onChange={(e) => setFormData(prevState => ({ ...prevState, unitPrice: e.target.value, price: e.target.value * prevState.totalYield }))}
                     required
+                    className="form-input"
                 />
 
-                <label htmlFor="price">Total Price:</label>
+                <label htmlFor="price" className="form-label">Total Price:</label>
                 <input
                     type="number"
                     id="price"
                     value={formData.price}
                     readOnly
+                    className="form-input"
                 />
 
-                <label htmlFor="cropName">Crop Name:</label>
-                <input type="text" id="cropName" value={formData.cropName} readOnly />
+                <label htmlFor="cropName" className="form-label">Crop Name:</label>
+                <input type="text" id="cropName" value={formData.cropName} readOnly className="form-input" />
 
-                <label htmlFor="harvestDate">Harvest Date:</label>
-                <input type="text" id="harvestDate" value={formData.harvestDate} readOnly />
+                <label htmlFor="harvestDate" className="form-label">Harvest Date:</label>
+                <input type="text" id="harvestDate" value={formData.harvestDate} readOnly className="form-input" />
 
-                <label htmlFor="totalYield">Total Yield:</label>
+                <label htmlFor="totalYield" className="form-label">Total Yield:</label>
                 <input
                     type="number"
                     id="totalYield"
                     value={formData.totalYield}
                     onChange={(e) => setFormData(prevState => ({ ...prevState, totalYield: e.target.value, price: e.target.value * prevState.unitPrice }))}
                     readOnly
+                    className="form-input"
                 />
 
-                <label htmlFor="quality">Quality:</label>
-                <input type="text" id="quality" value={formData.quality} readOnly />
+                <label htmlFor="quality" className="form-label">Quality:</label>
+                <input type="text" id="quality" value={formData.quality} readOnly className="form-input" />
 
                 {/* Add more form fields as needed */}
 
-                <button type="submit">Submit</button>
+                <button type="submit" className="form-button">Submit</button>
             </form>
-            {successMessage && <p>{successMessage}</p>}
+            {successMessage && <p className="success-message">{successMessage}</p>}
         </div>
+
     );
 };
 

@@ -1,15 +1,14 @@
-// WorkerDetails.js
-
 import React from 'react';
+import './WorkerDetails.scss'
 
 const WorkerDetails = ({ worker, onClose }) => {
   return (
-    <div className="popup">
-      <h3>Worker Details</h3>
-      <p>Worker ID: {worker.WorkerID}</p>
-      <p>Worker Name: {worker.WorkerName}</p>
-      <p>Contact Number: {worker.ContactNumber}</p>
-      <button onClick={onClose}>Close</button>
+    <div className="worker-details-popup">
+      <h3 className="popup-title">Worker Details</h3>
+      <p className="worker-info">Worker ID: {worker.WorkerID}</p>
+      <p className="worker-info">Worker Name: {worker.WorkerName}</p>
+      <p className="worker-info">Contact Number: {worker.ContactNumber}</p>
+      <button className="close-button" onClick={onClose}>Close</button>
     </div>
   );
 };
