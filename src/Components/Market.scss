@@ -53,10 +53,14 @@
             .buy-button {
                 background-color: #2196F3;
                 color: #fff;
-                padding: 10px;
+                padding: 10px 15px;
                 border: none;
                 border-radius: 4px;
                 cursor: pointer;
+
+                &:hover{
+                    background-color: #4CAF50;
+                }
 
                 // Adjust margin in mobile view
                 @media screen and (max-width: 768px) {

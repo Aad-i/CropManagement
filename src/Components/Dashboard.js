@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import './Dashboard.scss'; // Import the SCSS file
+import Logout from './Logout';
 
 const Dashboard = () => {
   const [userData, setUserData] = useState(null);
@@ -30,6 +31,7 @@ const Dashboard = () => {
 
   return (
     <div className="user-dashboard">
+      <Logout/>
       <h2 className="dashboard-title">User Dashboard</h2>
       {error && <p className="error-message">{error}</p>}
       {userData && (
@@ -70,8 +72,6 @@ const Dashboard = () => {
               <p className="card-description">Explore and manage market items.</p>
             </Link>
           </div>
-
-          {/* Add more summary cards for other metrics */}
         </div>
       )}
     </div>

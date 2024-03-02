@@ -47,8 +47,8 @@ const Transactions = () => {
                             <th className="table-header">Transaction Date</th>
                             <th className="table-header">Transaction Time</th>
                             <th className="table-header">Quantity</th>
-                            <th className="table-header">Unit Price</th>
                             <th className="table-header">Total Price</th>
+                            {/* <th className="table-header">Total Price</th> */}
                             <th className="table-header">Crop ID</th>
                             <th className="table-header">Counterparty ID</th>
                         </tr>
@@ -61,7 +61,7 @@ const Transactions = () => {
                                 <td className="table-cell">{transaction.TransactionTime}</td>
                                 <td className="table-cell">{transaction.Quantity}</td>
                                 <td className="table-cell">{transaction.UnitPrice}</td>
-                                <td className="table-cell">{transaction.TotalPrice}</td>
+                                {/* <td className="table-cell">{transaction.TotalPrice}</td> */}
                                 <td className="table-cell">{transaction.CropID}</td>
                                 <td className="table-cell counterparty-id" onClick={() => handleCounterpartyClick(transaction.CounterpartyID)}>
                                         {transaction.CounterpartyID}

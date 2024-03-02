@@ -1,10 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Login.scss'; // Import the SCSS file
-
+import loginImage from '../Images/Login.jpg'
+import sheepAudio from '../Sounds/sheep.mp3'
 
 const Login = () => {
+  const [audioPlayed, setAudioPlayed] = useState(false);
+
+  useEffect(() => {
+
+    if (!audioPlayed) {
+      const audio = new Audio(require('D:/Admin/Desktop/Crop Management/cim/src/Sounds/sheep.mp3'));
+      audio.play();
+
+      // Update state to indicate that audio has been played
+      setAudioPlayed(true);
+    }
+    
+  }, [audioPlayed]);
+
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -48,22 +63,28 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <h2 className="login-title">User Login</h2>
-      {error && <p className="error-message">{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label className="form-label">Username:</label>
-          <input type="text" name="username" value={formData.username} onChange={handleChange} className="form-input" required />
-        </div>
-        <div className="form-group">
-          <label className="form-label">Password:</label>
-          <input type="password" name="password" value={formData.password} onChange={handleChange} className="form-input" required />
-        </div>
-        <button type="submit" className="submit-button" disabled={loading}>
-          {loading ? 'Logging in...' : 'Login'}
-        </button>
-      </form>
+      <div className='login-container-image'>
+        <img src={loginImage} alt='herd of sheeps' className='login-image'></img>
+      </div>
+      <div className='login-container-content'>
+        <h2 className="login-title">User Login</h2>
+        {error && <p className="error-message">{error}</p>}
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label className="form-label">Username:</label>
+            <input type="text" name="username" value={formData.username} onChange={handleChange} className="form-input" required />
+          </div>
+          <div className="form-group">
+            <label className="form-label">Password:</label>
+            <input type="password" name="password" value={formData.password} onChange={handleChange} className="form-input" required />
+          </div>
+          <button type="submit" className="submit-button" disabled={loading}>
+            {loading ? 'Logging in...' : 'Login'}
+          </button>
+        </form>
+      </div>
     </div>
+
   );
 };
 

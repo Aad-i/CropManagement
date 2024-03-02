@@ -13,6 +13,7 @@ import EquipmentsDetailsPage from './Components/EquipmentDetails';
 import Market from './Components/Market';
 import SellItem from './Components/SellItem';
 import Checkout from './Components/Checkout';
+import Logout from './Components/Logout';
 
 
 const App = () => {

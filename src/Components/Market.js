@@ -47,8 +47,8 @@ const Market = () => {
             <th className="table-header">Item Name</th>
             <th className="table-header">Quantity</th>
             <th className="table-header">Grade</th>
-            <th className="table-header">Unit Price</th>
-            <th className="table-header">Price</th>
+            {/* <th className="table-header">Unit Price</th> */}
+            <th className="table-header">Total Price</th>
             <th className="table-header">Seller ID</th>
             <th className="table-header">Action</th>
           </tr>
@@ -61,7 +61,7 @@ const Market = () => {
                 <td className="table-cell">{item.CropName}</td>
                 <td className="table-cell">{item.TotalYield}</td>
                 <td className="table-cell">{item.Quality}</td>
-                <td className="table-cell">{item.UnitPrice}</td>
+                {/* <td className="table-cell">{item.Price}</td> */}
                 <td className="table-cell">{item.Price}</td>
                 <td className="table-cell">{item.SellerID}</td>
                 <td className="table-cell">

@@ -27,9 +27,9 @@
             width: 100%;
             border-collapse: collapse;
             overflow-x: auto; // Enable horizontal scrolling on smaller screens
-        //     &:nth-child(even) {
-        //         background-color: #f2f2f2; // Light gray background for odd entries
-        // }
+            //     &:nth-child(even) {
+            //         background-color: #f2f2f2; // Light gray background for odd entries
+            // }
 
             .table-header {
                 background-color: #4CAF50;
@@ -41,17 +41,17 @@
                 border: 1px solid #ddd;
                 padding: 15px 10px;
                 font-size: 0.9rem;
+            }
 
-                .worker-id {
+            .worker-id {
+                transition: background-color 0.1s ease-in;
+
+                &:hover {
                     cursor: pointer;
-                    color: #008080; // Dark cyan color
-                    transition: color 0.3s ease;
-
-                    &:hover {
-                        color: #00bcd4; // Lighter cyan color on hover
-                    }
+                    background-color: #d9ffaa; 
                 }
             }
+
         }
     }
 

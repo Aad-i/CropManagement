@@ -8,7 +8,6 @@ const jwt = require('jsonwebtoken'); // Assuming you are using JWT for authentic
 // Middleware to parse JSON requests
 router.use(express.json());
 
-// // Middleware to verify JWT token
 // const verifyToken = (req, res, next) => {
 //   const token = req.header('Authorization');
 

@@ -38,16 +38,17 @@
                 border: 1px solid #ddd;
                 padding: 15px 10px;
                 font-size: 0.9rem;
+            }
 
-                .counterparty-id {
-                    transition: background-color 0.3s ease-in;
+            .counterparty-id {
+                transition: background-color 0.1s ease-in;
 
-                    &:hover {
-                        cursor: pointer;
-                        background-color: #e0f7fa; // Light blue background on hover
-                    }
+                &:hover {
+                    cursor: pointer;
+                    background-color: #d9ffaa; 
                 }
             }
+
 
             // Responsive styles
             @media screen and (max-width: 768px) {
@@ -62,7 +63,7 @@
 
                 .table-cell {
                     &:last-child {
-                        border-bottom: 2px solid #333333;  // Add dark border after each entry
+                        border-bottom: 2px solid #333333; // Add dark border after each entry
                     }
                 }
             }

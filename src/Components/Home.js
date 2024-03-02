@@ -7,7 +7,8 @@ import './Home.scss'; // Import the theme SCSS file
 const Home = () => {
   return (
     <div className="landing-page-container">
-      <h2 className="landing-page-title">Welcome to our App</h2>
+      <h2 className="landing-page-title">Farm.Connect</h2>
+      <p className='landing-page-description'>Your smart Farm Inventory Management system</p>
       <p className="landing-page-description">Explore the features and get started with our farm inventory management app:</p>
 
       <div className="cta-buttons-container">

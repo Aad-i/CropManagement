@@ -1,37 +1,57 @@
 // Login.scss
 
 .login-container {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    max-width: 400px;
+  display: flex;
+  flex-direction: row;
+  // position: fixed;
+  // top: 50%;
+  // left: 50%;
+  // transform: translate(-50%, -50%);
+
+  // margin: auto;
+  // padding: 2rem;
+  background-color: #f7f7f7;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  // text-align: center;
+
+  .login-container-image {
+    .login-image {
+      height: 100vh;
+      width: auto;
+    }
+  }
+
+  .login-container-content {
     margin: auto;
     padding: 2rem;
-    background-color: #f7f7f7;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-  
+    width: 100%;
+    max-width: 400px;
+    border: 1px solid #4CAF50;
+    border-radius: 20px;
+
+    &:hover{
+      box-shadow:0 0 10px #45a049 ;
+    }
+
     .login-title {
       font-size: 1.8rem;
       color: #333333;
       margin-bottom: 20px;
     }
-  
+
     .form-group {
       display: flex;
       flex-direction: column;
       margin-bottom: 15px;
-  
+
       .form-label {
         font-size: 1rem;
         color: #555555;
         margin-bottom: 8px;
         text-align: left;
       }
-  
+
       .form-input {
         padding: 10px;
         border: 1px solid #ddd;
@@ -41,7 +61,7 @@
         box-sizing: border-box;
       }
     }
-  
+
     .submit-button {
       background-color: #4CAF50;
       color: #ffffff;
@@ -51,21 +71,21 @@
       cursor: pointer;
       font-size: 1rem;
       transition: background-color 0.3s;
-  
+
       &:hover {
         background-color: #45a049;
       }
-  
+
       &:disabled {
         background-color: #dddddd;
         cursor: not-allowed;
       }
     }
-  
+
     .error-message {
       color: #ff0000;
       margin-top: 10px;
       font-size: 0.9rem;
     }
   }
-  
+}

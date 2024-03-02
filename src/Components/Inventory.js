@@ -221,6 +221,7 @@ const Inventory = () => {
           Total Capacity:
           <input
             type="number"
+            min={0}
             className='form-input'
             value={newInventoryItem.TotalCapacity}
             onChange={(e) => setNewInventoryItem({ ...newInventoryItem, TotalCapacity: Number(e.target.value) })}
@@ -231,6 +232,7 @@ const Inventory = () => {
           Occupied Capacity:
           <input
             type="number"
+            min={0}
             className='form-input'
             value={newInventoryItem.OccupiedCapacity}
             onChange={(e) => setNewInventoryItem({ ...newInventoryItem, OccupiedCapacity: Number(e.target.value) })}
