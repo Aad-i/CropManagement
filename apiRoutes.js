@@ -1,8 +1,8 @@
 // apiRoutes.js
 const express = require('express');
-const router = express.Router();  // Define the router here
+const router = express.Router();  
 const pool = require('./db');
-const jwt = require('jsonwebtoken'); // Assuming you are using JWT for authentication
+const jwt = require('jsonwebtoken'); // using JWT for authentication
 
 
 // Middleware to parse JSON requests
