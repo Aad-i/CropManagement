@@ -1,7 +1,3 @@
-// Dashboard.scss
-
-// Global styles if needed
-
 .user-dashboard {
   text-align: center;
   padding: 20px;
@@ -9,7 +5,6 @@
   .dashboard-title {
     font-size: 2rem;
     color: #4CAF50;
-    /* Green color */
     margin-bottom: 20px;
   }
 
@@ -21,15 +16,10 @@
 
   .user-info {
     color: #333333;
-    /* Dark gray color */
     font-size: 1rem;
     margin: 5px 0;
 
     p {
-      // Greyish brown color for the content
-      //   color: #A1887F;
-      // Greyish green color for the content
-      //   color: #546E7A;
       color: #424242;
       /* Darker grey color for the content */
       font-size: 1rem;
@@ -65,10 +55,6 @@
         }
 
         .card-description {
-          // Greyish brown color for the content
-          //   color: #A1887F;
-          // Greyish green color for the content
-          //   color: #546E7A;
           color: #424242;
           /* Darker grey color for the content */
           font-size: 1rem;
@@ -86,7 +72,6 @@
   }
 }
 
-// Media query for responsiveness
 @media screen and (max-width: 768px) {
   .user-dashboard .summary-cards .summary-card {
     flex: 0 0 calc(100% - 20px);

@@ -8,21 +8,6 @@ const jwt = require('jsonwebtoken'); // Assuming you are using JWT for authentic
 // Middleware to parse JSON requests
 router.use(express.json());
 
-// const verifyToken = (req, res, next) => {
-//   const token = req.header('Authorization');
-
-//   if (!token) return res.status(401).json({ error: 'Unauthorized' });
-
-//   try {
-//     const decoded = jwt.verify(token, 'development');
-//     req.user = decoded.userId;
-//     next();
-//   } catch (error) {
-//     console.error(error);
-//     res.status(401).json({ error: 'Token is not valid' });
-//   }
-// };
-
 const verifyToken = (req, res, next) => {
   const token = req.header('Authorization');
   console.log('Received Token:', token);
@@ -176,7 +161,10 @@ router.get('/users/:userID', async (req, res) => {
 //   }
 // });
 
+
+
 // Get crops related to a specific user
+
 router.get('/crops/user/:userID', async (req, res) => {
   try {
     const { userID } = req.params;
@@ -421,7 +409,6 @@ router.delete('/inventory/user/:userID/:inventoryID', async (req, res) => {
 
 /*************************************************************************************************/
 
-
 // // Define routes for the 'inventory' resource
 // router.route('/inventory')
 //   .get(async (req, res) => {
@@ -502,27 +489,10 @@ router.delete('/inventory/user/:userID/:inventoryID', async (req, res) => {
 //     res.status(500).json({ error: 'Internal Server Error' });
 //   }
 // });
+/**************************************************************************************************************/
 
-
-/********************************************************************************* */
-// Get transactions related to a specific user
-// router.get('/transactions/user/:userID', async (req, res) => {
-//   try {
-//     const { userID } = req.params;
-
-//     // Fetch transactions based on the userID
-//     const [rows] = await pool.query('SELECT * FROM Transactions WHERE UserID = ?', [userID]);
-
-//     res.json(rows);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: 'Internal Server Error' });
-//   }
-// });
 
 // Get transactions for a specific user with optional filter
-// Get transactions for a specific user with optional filter
-
 
 router.get('/transactions/user/:userID', async (req, res) => {
   try {
@@ -543,32 +513,6 @@ router.get('/transactions/user/:userID', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
-
-
-
-// Create a new transaction for a user
-
-// router.post('/transactions/user/:userID', async (req, res) => {
-//   try {
-//     const { userID } = req.params;
-//     const data = req.body;
-
-//     // Generate a short transaction ID
-
-//     // Add the transactionID and userID to the transaction data
-//     data.UserID = userID;
-
-//     // Insert the new transaction into the database
-//     const [result] = await pool.query('INSERT INTO Transactions SET ?', [data]);
-
-//     res.json({ message: 'Transaction created successfully', id: result.insertId });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: 'Internal Server Error' });
-//   }
-// });
-
 
 const short = require('short-uuid');
 
@@ -696,6 +640,9 @@ router.delete('/transactions/user/:userID/:transactionID', async (req, res) => {
 //   }
 // });
 
+/*****************************************************************************************************************************/
+
+
 // Define routes for the 'counterparties' resource
 router.post('/counterparties', async (req, res) => {
   try {
@@ -727,6 +674,8 @@ router.get('/counterparties/:id', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+
 // Update a Counterparty
 // router.put('/counterparties/:id', async (req, res) => {
 //   try {
@@ -762,7 +711,7 @@ router.get('/counterparties/:id', async (req, res) => {
 //   }
 // });
 
-
+/************************************************************************************************************************************** */
 // // Define routes for the 'users' resource
 // router.route('/users')
 //   .get(async (req, res) => {
@@ -840,6 +789,8 @@ router.get('/counterparties/:id', async (req, res) => {
 //     res.status(500).json({ error: 'Internal Server Error' });
 //   }
 // });
+
+/************************************************************************************************************************ */
 
 // // Define routes for the 'equipments' resource
 // router.route('/equipments')
@@ -1185,7 +1136,7 @@ router.get('/market-items/:cropID/:sellerID', async (req, res) => {
 //   }
 // });
 
-/*************************************************************************************************** */
+/****************************************************************************************************************************************** */
 // Get all equipment details for a specific user
 router.get('/user/:userID', async (req, res) => {
   try {
@@ -1272,9 +1223,6 @@ router.get('/equipments-usage/user/:userID', async (req, res) => {
   }
 });
 
-// Get equipment usage items and details related to a specific user
-// Get equipment usage details with related equipment information for a specific user
-
 // Create a new equipment usage item for a user
 router.post('/equipments-usage/user/:userID', async (req, res) => {
   try {
@@ -1350,31 +1298,11 @@ router.route('/workers')
       res.status(500).json({ error: 'Internal Server Error' });
     }
   })
-// .post(async (req, res) => {
-//   try {
-//     const data = req.body;
-//     if (typeof data !== 'object' || Array.isArray(data)) {
-//       return res.status(400).json({ error: 'Invalid data' });
-//     }
-//     const [result] = await pool.query('INSERT INTO Workers SET ?', [data]);
-//     res.json({ message: 'POST request for workers', id: result.insertId });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: 'Internal Server Error' });
-//   }
-// })
-
-
 
 // Get a single Worker by ID
 router.get('/workers/:workerid', async (req, res) => {
   try {
     const { workerid } = req.params;
-
-    // Validate if the ID is a valid number
-    // if (isNaN(workerid)) {
-    //   return res.status(400).json({ error: 'Invalid ID' });
-    // }
 
     // Fetch worker details based on the WorkerID
     const [result] = await pool.query('SELECT * FROM Workers WHERE WorkerID = ?', [workerid]);
@@ -1429,7 +1357,5 @@ router.get('/workers/:workerid', async (req, res) => {
 //     res.status(500).json({ error: 'Internal Server Error' });
 //   }
 // });
-
-
 
 module.exports = router;

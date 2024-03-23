@@ -1,24 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Login.scss'; // Import the SCSS file
-import loginImage from '../Images/Login.jpg'
-import sheepAudio from '../Sounds/sheep.mp3'
 
 const Login = () => {
-  const [audioPlayed, setAudioPlayed] = useState(false);
-
-  useEffect(() => {
-
-    if (!audioPlayed) {
-      const audio = new Audio(require('D:/Admin/Desktop/Crop Management/cim/src/Sounds/sheep.mp3'));
-      audio.play();
-
-      // Update state to indicate that audio has been played
-      setAudioPlayed(true);
-    }
-    
-  }, [audioPlayed]);
 
   const [formData, setFormData] = useState({
     username: '',
@@ -44,14 +29,14 @@ const Login = () => {
 
     try {
       const response = await axios.post('http://localhost:5000/login', formData);
-      const token = response.data.token; // Assuming the server sends a JWT token
+      const token = response.data.token; // JWT token from the server
 
-      // Store the token securely (e.g., in localStorage)
+      // Store the token securely (in localStorage)
       localStorage.setItem('token', token);
 
       console.log('Login successful');
 
-      // Redirect to the dashboard or another route
+      // Redirect to the dashboard 
       navigate('/dashboard');
     } catch (error) {
       console.error(error.response.data);
@@ -63,9 +48,6 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <div className='login-container-image'>
-        <img src={loginImage} alt='herd of sheeps' className='login-image'></img>
-      </div>
       <div className='login-container-content'>
         <h2 className="login-title">User Login</h2>
         {error && <p className="error-message">{error}</p>}

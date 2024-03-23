@@ -1,5 +1,3 @@
-// jwtUtils.js
-
 const jwt = require('jsonwebtoken');
 
 function generateJWT(userId) {

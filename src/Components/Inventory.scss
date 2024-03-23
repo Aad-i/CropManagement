@@ -28,7 +28,6 @@
             display: block;
             margin-bottom: 10px;
             color: #1E4151;
-            /* Updated color */
         }
 
         .form-input,
@@ -42,7 +41,6 @@
             box-sizing: border-box;
             font-size: 1rem;
             color: #333333;
-            /* Color for input text */
         }
 
         .toggle-location-button {
@@ -171,7 +169,6 @@
                     cursor: pointer;
                     font-size: 1rem;
                     transition: background-color 0.3s;
-                    /* Added transition for a smooth effect */
 
                     &:hover {
                         background-color: #45a049;
@@ -182,7 +179,6 @@
         }
     }
 
-    // Add responsive styles
     @media screen and (max-width: 768px) {
 
         .inventory-form,

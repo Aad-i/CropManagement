@@ -1,5 +1,3 @@
-// EquipmentsUsage.scss
-
 .equipments-usage-container {
     position: relative;
     text-align: center;
@@ -27,9 +25,6 @@
             width: 100%;
             border-collapse: collapse;
             overflow-x: auto; // Enable horizontal scrolling on smaller screens
-            //     &:nth-child(even) {
-            //         background-color: #f2f2f2; // Light gray background for odd entries
-            // }
 
             .table-header {
                 background-color: #4CAF50;
@@ -70,14 +65,10 @@
             border-bottom: 2px solid #333333; // Add dark border after each entry
 
             .table-cell {
-                // margin-bottom: 10px; // Add spacing between entries
-
                 &:last-child {
                     margin-bottom: 0; // Remove spacing after the last entry
                 }
             }
         }
-
-
     }
 }

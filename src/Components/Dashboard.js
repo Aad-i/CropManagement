@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import './Dashboard.scss'; // Import the SCSS file
+import './Dashboard.scss'; 
 import Logout from './Logout';
 
 const Dashboard = () => {

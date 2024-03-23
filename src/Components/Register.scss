@@ -1,5 +1,3 @@
-// Register.scss
-
 .register-container {
     position: absolute;
     top: 50%;
@@ -8,13 +6,13 @@
     width: 100%;
     max-width: 40rem;
     padding: 2rem;
-    background-color: #f7f7f7; /* Light background color */
+    background-color: #f7f7f7; 
     border-radius: 0.8rem;
     box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
     
     .register-title {
       font-size: 2rem;
-      color: #4CAF50; /* Green color */
+      color: #4CAF50; 
       margin-bottom: 1.5rem;
     }
   
@@ -38,7 +36,7 @@
     }
   
     .submit-button {
-      background-color: #4CAF50; /* Green color */
+      background-color: #4CAF50; 
       color: white;
       padding: 1.2rem 2rem;
       border: none;
@@ -56,7 +54,7 @@
   @media only screen and (max-width: 40rem) {
     .register-container {
       width: 100%;
-      margin-top: 0; /* Adjust as needed for smaller screens */
+      margin-top: 0; 
   
       .register-title {
         font-size: 1.8rem;

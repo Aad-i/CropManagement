@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import CounterpartyDetails from './CounterPartyDetails';
-import './Transactions.scss'; // Import your SCSS file
+import './Transactions.scss'; 
 
 const Transactions = () => {
     const { userID } = useParams();

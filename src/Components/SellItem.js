@@ -16,7 +16,6 @@ const SellItem = () => {
         harvestDate: '',
         totalYield: 0,
         quality: '',
-        // Add more fields as needed
     });
 
     // State for success message
@@ -67,7 +66,6 @@ const SellItem = () => {
             harvestDate: formattedDate,
             totalYield: selectedCrop.TotalYield,
             quality: selectedCrop.Quality,
-            // Add more fields as needed
         }));
     };
 
@@ -125,7 +123,6 @@ const SellItem = () => {
             harvestDate: '',
             totalYield: 0,
             quality: '',
-            // Add more fields as needed
         });
     };
 
@@ -202,8 +199,6 @@ const SellItem = () => {
 
                 <label htmlFor="quality" className="form-label">Quality:</label>
                 <input type="text" id="quality" value={formData.quality} readOnly className="form-input" />
-
-                {/* Add more form fields as needed */}
 
                 <button type="submit" className="form-button">Submit</button>
             </form>
