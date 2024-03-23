@@ -69,7 +69,7 @@ const Register = () => {
 
         <label className="form-label">
           Phone Number:
-          <input type="text" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} className="form-input" required />
+          <input type="number" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} className="form-input" required />
         </label>
 
         <label className="form-label">

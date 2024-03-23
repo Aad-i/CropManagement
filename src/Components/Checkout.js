@@ -7,22 +7,24 @@ import 'jspdf-autotable';
 import './Checkout.scss';
 
 const Checkout = () => {
-    const navigate = useNavigate();
-    const location = useLocation();
-    const { item, userID } = location.state;
-    const [sellerDetails, setSellerDetails] = useState(null);
-    const [loading, setLoading] = useState(false);
+    // Initialize necessary hooks
+    const navigate = useNavigate(); // Hook for navigating between pages
+    const location = useLocation(); // Hook for accessing location information
+    const { item, userID } = location.state; // Destructuring state object to extract item and userID
+    const [sellerDetails, setSellerDetails] = useState(null); // State variable for storing seller details
+    const [loading, setLoading] = useState(false); // State variable for managing loading state
 
-    // Function to fetch seller details
+    // Function to fetch seller details from backend
     const fetchSellerDetails = async (sellerID) => {
         try {
             const response = await axios.get(`http://localhost:5000/users/${sellerID}`);
-            setSellerDetails(response.data);
+            setSellerDetails(response.data); // Set fetched seller details to state
         } catch (error) {
             console.error('Error fetching seller details:', error);
         }
     };
 
+    // Effect hook to fetch seller details when item's seller ID changes
     useEffect(() => {
         fetchSellerDetails(item.SellerID);
     }, [item.SellerID]);
@@ -32,11 +34,12 @@ const Checkout = () => {
         try {
             setLoading(true); // Set loading to true when starting the confirmation process
 
+            // Get current date and time
             const currentDate = new Date();
             const formattedDate = currentDate.toISOString().split('T')[0]; // Extract only date
             const formattedTime24hr = currentDate.toLocaleTimeString('en-US', { hour12: false }); // Extract 24hr time  
 
-            // 3. Create transaction data for the buyer
+            // Create transaction data for the buyer
             await axios.post(`http://localhost:5000/transactions/user/${userID}`, {
                 TransactionID: '',
                 TransactionDate: formattedDate,
@@ -66,7 +69,6 @@ const Checkout = () => {
             // Add table for item details
             pdf.autoTable({
                 startY: 45,
-                // head: [['Item', 'Details']],
                 body: [
                     ['Item ID', item.ItemID],
                     ['Item Name', item.CropName],
@@ -97,11 +99,12 @@ const Checkout = () => {
         }
     };
 
+    // Render checkout components
     return (
         <div className="checkout-container">
             <h2 className="checkout-title">Checkout Bill</h2>
 
-            {/* Existing table for item details */}
+            {/* Table displaying item details */}
             <table className="bill-table">
                 <tbody>
                     <tr>
@@ -131,6 +134,7 @@ const Checkout = () => {
                 </tbody>
             </table>
 
+            {/* Display seller details if available */}
             {sellerDetails && (
                 <div className="seller-details">
                     <p className="bill-section-title">Seller Details:</p>
@@ -153,6 +157,7 @@ const Checkout = () => {
                 </div>
             )}
 
+            {/* Button for confirming purchase */}
             <button className="confirm-purchase-button" onClick={handleConfirmPurchase} disabled={loading}>
                 {loading ? 'Confirming...' : 'Confirm Purchase'}
             </button>

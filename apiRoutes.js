@@ -1016,9 +1016,6 @@ router.get('/market-items/user/belongs/:userID', async (req, res) => {
   }
 });
 
-
-
-
 router.post('/market-items', async (req, res) => {
   try {
     const { itemID, sellerID, price } = req.body;

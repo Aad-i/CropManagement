@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import './Crops.scss';
+import './Crops.scss'; // Importing component styles
 
 const Crops = () => {
+  // Extracting userID from URL parameters
   const { userID } = useParams();
-  const [crops, setCrops] = useState([]);
-  const [editMode, setEditMode] = useState(false);
-  const [newCrop, setNewCrop] = useState({
+
+  // State variables
+  const [crops, setCrops] = useState([]); // State variable for storing crops data
+  const [editMode, setEditMode] = useState(false); // State variable for managing edit mode
+  const [newCrop, setNewCrop] = useState({ // State variable for storing new crop details
     CropID: '',
     CropName: '',
     Purpose: '',
@@ -17,20 +20,22 @@ const Crops = () => {
     UserID: userID,
   });
 
-  const [qualityFilter, setQualityFilter] = useState('');
-  const [purposeFilter, setPurposeFilter] = useState('');
+  const [qualityFilter, setQualityFilter] = useState(''); // State variable for quality filter
+  const [purposeFilter, setPurposeFilter] = useState(''); // State variable for purpose filter
 
+  // Effect hook to fetch crops data
   useEffect(() => {
     fetchCrops();
   }, [userID, qualityFilter, purposeFilter]);
 
+  // Function to fetch crops data from backend
   const fetchCrops = async () => {
     try {
       const response = await axios.get(`http://localhost:5000/crops/user/${userID}`, {
         params: {
           quality: qualityFilter,
           purpose: purposeFilter,
-          excludeHidden: true, //to exclude hidden crops
+          excludeHidden: true, // Exclude hidden crops
         },
       });
       setCrops(response.data);
@@ -39,6 +44,7 @@ const Crops = () => {
     }
   };
 
+  // Function to handle creation of a new crop
   const handleCreateCrop = async () => {
     if (isAnyFieldEmpty()) {
       alert('Please fill out all required fields.');
@@ -63,6 +69,7 @@ const Crops = () => {
     }
   };
 
+  // Function to handle editing of a crop
   const handleEditCrop = (crop) => {
     // Set the details of the selected crop in the newCrop state for editing
     setNewCrop({
@@ -77,6 +84,7 @@ const Crops = () => {
     setEditMode(true);
   };
 
+  // Function to handle confirmation of crop editing
   const handleConfirmEdit = async () => {
     if (isAnyFieldEmpty()) {
       alert('Please fill out all required fields.');
@@ -102,6 +110,7 @@ const Crops = () => {
     }
   };
 
+  // Function to handle deletion of a crop
   const handleDeleteCrop = async (cropID) => {
     try {
       await axios.delete(`http://localhost:5000/crops/user/${userID}/${cropID}`);
@@ -112,6 +121,7 @@ const Crops = () => {
     }
   };
 
+  // Function to handle cancellation of crop editing
   const handleCancelEdit = () => {
     // Clear the newCrop state and exit edit mode
     setNewCrop({
@@ -126,6 +136,7 @@ const Crops = () => {
     setEditMode(false);
   };
 
+  // Function to check if any required field is empty
   const isAnyFieldEmpty = () => {
     return (
       !newCrop.CropID ||
@@ -137,12 +148,13 @@ const Crops = () => {
     );
   };
 
+  // Filter crops based on quality and purpose
   const filteredCrops = crops.filter((crop) => {
     const qualityMatch = !qualityFilter || crop.Quality === qualityFilter;
     const purposeMatch = !purposeFilter || crop.Purpose === purposeFilter;
     return qualityMatch && purposeMatch;
   });
-
+  
   return (
     <div className="crops-container">
       <h2 className="crops-title">Crops</h2>
@@ -225,8 +237,8 @@ const Crops = () => {
 
         {editMode ? (
           <>
-            <button className="form-button" onClick={handleConfirmEdit}>Confirm Edit</button>
-            <button className="form-button" onClick={handleCancelEdit}>Cancel Edit</button>
+            <button className="form-button edit-buttons" onClick={handleConfirmEdit}>Confirm Edit</button>
+            <button className="form-button edit-buttons" onClick={handleCancelEdit}>Cancel Edit</button>
           </>
         ) : (
           <button className="form-button" onClick={handleCreateCrop}>Add Crop</button>
